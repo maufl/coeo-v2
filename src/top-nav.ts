@@ -4,7 +4,10 @@ import {LoginModal} from './login-dialog';
 @Component({ selector: 'top-nav' })
 @View({
    template: `<nav>
-             <div class="nav-wrapper">
+             <div class="nav-wrapper teal">
+<ul class="left">
+<li><a href="#"><i class="material-icons">menu</i></a></li>
+</ul>
                   <a href="#" class="brand-logo">Coeo</a>
                   <ul class="right hide-on-med-and-down">
                   <li><a href="#" (click)="loginmodal.open()"><i class="material-icons">face</i></a></li>

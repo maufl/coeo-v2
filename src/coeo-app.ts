@@ -6,7 +6,7 @@ import {SideBar} from './side-bar';
 @View({
    template: `<side-bar></side-bar>
    <top-nav></top-nav>
-   <main><h1>Hello world!</h1></main>
+   <main></main>
    <footer></footer>`,
    directives: [TopNav, SideBar]
 })
