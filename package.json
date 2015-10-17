@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "angular2": "2.0.0-alpha.42",
+    "materialize-css": "*",
     "systemjs": "0.18.4",
-    "materialize-css": "*"
+    "traceur": "0.0.92"
   }
 }

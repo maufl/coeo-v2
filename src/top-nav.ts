@@ -15,7 +15,4 @@ import {LoginModal} from './login-dialog';
    directives: [LoginModal]
 })
 export class TopNav {
-    debug(element) {
-        console.debug(element);
-    }
 }

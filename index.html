@@ -8,6 +8,11 @@
   <link type="text/css" rel="stylesheet" href="node_modules/materialize-css/dist/css/materialize.min.css"  media="screen,projection"/>
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
+  <style>
+   .modal {
+       color: rgba(0, 0, 0, 0.87);
+   }
+  </style>
 </head>
 
 <body>
@@ -15,11 +20,22 @@
 </body>
 
 <!-- ES6-related imports -->
-<script src="/node_modules/systemjs/dist/system-csp-production.js"></script>
+<script src="/node_modules/systemjs/dist/system.js"></script>
 
 <script>
-    //configure system loader
-    System.config({defaultJSExtensions: true});
+ //configure system loader
+ System.config({
+     defaultJSExtensions: true,
+     meta: {
+         'node_modules/fosp.js/lib/*': {
+             format: 'esm'
+         }
+     },
+     transpiler: 'traceur',
+     map: {
+         traceur: 'node_modules/traceur/bin/traceur.js'
+     }
+ });
 </script>
 <script src="/node_modules/angular2/bundles/angular2.min.js"></script>
 
