@@ -6,7 +6,7 @@ import {fosp} from './services/fosp';
     directives: [NgIf],
     template: `
 <div class="card">
-<div class="card-panel z-depth-2" style="z-index: 1; position: absolute; top: 0; right: 0; margin: 20px; height: 150px; width: 150px; background-position: center center; background-size: cover;" [style.background-image]="'url('+profile.src+')'">
+<div *ng-if="profile" class="card-panel z-depth-2" style="z-index: 1; position: absolute; top: 0; right: 0; margin: 20px; height: 150px; width: 150px; background-position: center center; background-size: cover;" [style.background-image]="'url('+profile.src+')'">
 </div>
 <div class="card-image" style="height: 300px; overflow: hidden;">
 <img *ng-if="cover" [src]="cover.src">
