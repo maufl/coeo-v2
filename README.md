@@ -1,6 +1,7 @@
-# ng2-play.ts
+# Coeo v2
 
-A minimal [Angular2](https://angular.io/) playground using [TypeScript](http://www.typescriptlang.org/) and [SystemJS loader](https://github.com/systemjs/systemjs)
+A complete rewrite of Coeo, this time using Angular2.
+Used [ng2-play](https://github.com/pkozlowski-opensource/ng2-play) as base.
 
 ## Install
 
@@ -13,4 +14,7 @@ Clone this repo and execute in your favourite shell:
 
 After completing installation type in your favourite shell:
 
-* `gulp play` to start a "Hello World" app in a new browser window. App files are observed and will be re-transpiled on each change.
+* `gulp play`
+
+## Copyright
+Copyright (C) 2015 Felix Maurer <felix.maurer@student.kit.edu>
