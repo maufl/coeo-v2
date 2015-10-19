@@ -10,7 +10,7 @@ import {LoginModal} from './login-dialog';
 </ul>
                   <a href="#" class="brand-logo">Coeo</a>
                   <ul class="right hide-on-med-and-down">
-                  <li><a href="#" (click)="loginmodal.open()"><i class="material-icons">face</i></a></li>
+                  <li><a href="#" (click)="loginmodal.open(); $event.preventDefault()"><i class="material-icons">face</i></a></li>
                   <login-modal #loginmodal ></login-modal>
                   </ul>
              </div>
