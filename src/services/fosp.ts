@@ -1,9 +1,11 @@
 import {Connection} from 'node_modules/fosp.js/lib/connection';
 import {SUCCEEDED} from 'node_modules/fosp.js/lib/response';
-import {Request, AUTH, GET} from 'node_modules/fosp.js/lib/request';
-import {URL} from 'node_modules/fosp.js/lib/url';
+import {Request, AUTH, GET, READ} from 'node_modules/fosp.js/lib/request';
+import {URL as FOSPURL} from 'node_modules/fosp.js/lib/url';
 
 class FospService {
+    currentUser: string;
+
     constructor() {
         this.connection = null;
         this.open('localhost');
@@ -30,6 +32,7 @@ class FospService {
         }
         return this.connection.sendRequest(req).then((resp)=> {
             if (resp.status === SUCCEEDED) {
+                this.currentUser = username;
                 return Promise.resolve();
             }
             return Promise.reject('Authentication failed, code: ' + resp.code);
@@ -40,7 +43,7 @@ class FospService {
         if (this.connection === null) {
             return Promise.reject("Not connected");
         }
-        var url = new URL(username + "/soc/me");
+        var url = new FOSPURL(username + "/soc/me");
         var req = new Request({method: GET, url: url});
         return this.connection.sendRequest(req).then((resp) => {
             if (resp.status === SUCCEEDED) {
@@ -48,6 +51,27 @@ class FospService {
             }
             return Promise.reject('Response code was ' + resp.code);
         })
+    }
+
+    loadImage(path) {
+        if (this.connection === null) {
+            return Promise.reject("Not connected");
+        }
+        var url = new FOSPURL(path);
+        var req = new Request({method: GET, url: url});
+        return this.connection.sendRequest(req).then((response) => {
+            var attachment = response.body.attachment || { type: ''};
+            if (!attachment.type.match(/^image\//)) {
+                return Promise.reject('Resource ' + path + ' is not an image');
+            }
+            var req = new Request({method: READ, url: url});
+            return this.connection.sendRequest(req).then((response) => {
+                var blob = new Blob([response.body], {type: attachment.type})
+                var img = new Image()
+                img.src = URL.createObjectURL(blob)
+                return Promise.resolve(img);
+            });
+        });
     }
 }
 

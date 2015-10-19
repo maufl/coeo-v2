@@ -1,6 +1,7 @@
 import {Component, View, NgIf} from 'angular2/angular2';
 import {RouteParams} from 'angular2/router';
 import {fosp} from './services/fosp';
+import {CoverPhoto} './cover-photo';
 
 @Component({
     selector: 'user-view',
@@ -8,15 +9,21 @@ import {fosp} from './services/fosp';
 })
 @View({
     template: `
-<span *ng-if="error">{{ error }}</span>
-<h1 *ng-if="user">{{ user.fullName }}</h1>
+<div class="container">
+<div class="row">
+<div class="col s12">
+<cover-photo *ng-if="user" [userid]="userId" [username]="user.fullName"></cover-photo>
+</div>
+</div>
+<div class="row">
+</div>
+</div>
 `,
-    directives: [NgIf]
+    directives: [NgIf, CoverPhoto]
 })
 export class UserView {
     user: Object;
     userId: string;
-    error: string;
 
     constructor(routeParams: RouteParams) {
         this.userId = routeParams.params.id;
@@ -31,7 +38,7 @@ export class UserView {
         }).then((user) => {
             this.user = user;
         }).catch((error) => {
-            this.error = error;
+            Materialize.toast(error, 4000);
         })
     }
 }
