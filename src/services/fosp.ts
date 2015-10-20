@@ -73,6 +73,17 @@ class FospService {
             });
         });
     }
+
+    get(path) {
+        if (this.connection === null) {
+            return Promise.reject("Not connected");
+        }
+        var url = new FOSPURL(path);
+        var req = new Request({method: GET, url: url});
+        return this.connection.sendRequest(req).then((response) => {
+            return response.body.data;
+        })
+    }
 }
 
 export var fosp = new FospService();

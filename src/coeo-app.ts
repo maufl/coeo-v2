@@ -17,7 +17,7 @@ import {UserView} from './user-view';
     directives: [TopNav, SideBar, RouterOutlet, RouterLink]
 })
 @RouteConfig([
-    { path: '/', component: HomeScreen }
+    { path: '/', component: HomeScreen },
     { path: '/u/:id', component: UserView }
 ])
 export class CoeoApp {
