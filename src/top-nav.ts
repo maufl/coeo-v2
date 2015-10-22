@@ -1,12 +1,14 @@
 import {Component, View} from 'angular2/angular2';
+import {SideBar} from './side-bar';
 import {LoginModal} from './login-dialog';
 
 @Component({ selector: 'top-nav' })
 @View({
    template: `<nav>
+<side-bar #side-bar></side-bar>
              <div class="nav-wrapper teal">
 <ul class="left">
-<li><a href="#"><i class="material-icons">menu</i></a></li>
+<li><a href="#" (click)="sideBar.show(); $event.preventDefault(); $event.stopPropagation();"><i class="material-icons">menu</i></a></li>
 </ul>
                   <a href="#" class="brand-logo">Coeo</a>
                   <ul class="right hide-on-med-and-down">
@@ -15,7 +17,7 @@ import {LoginModal} from './login-dialog';
                   </ul>
              </div>
    </nav>`,
-   directives: [LoginModal]
+    directives: [LoginModal, SideBar]
 })
 export class TopNav {
 }
