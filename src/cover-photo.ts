@@ -8,12 +8,12 @@ import {fosp} from './services/fosp';
 <div class="card">
 <div *ng-if="profile" class="card-panel z-depth-2" style="z-index: 1; position: absolute; top: 0; right: 0; margin: 20px; height: 100px; width: 100px; background-position: center center; background-size: cover;" [style.background-image]="'url('+profile.src+')'">
 </div>
-<div class="card-image" style="height: 200px; overflow: hidden;">
-<img *ng-if="cover" [src]="cover.src">
+<div *ng-if="cover" [style.background-image]="'url('+cover.src+')'" class="card-image" style="background-size: cover; background-position: center center; height: 200px; overflow: hidden;">
 <span class="card-title" style="color: black;">{{username}}</span>
 </div>
-<div class="card-content" *ng-if="motto">
-<blockquote style="margin: 0;">{{motto}}</blockquote>
+<div class="card-content">
+<h4 *ng-if="!cover">{{username}}</h4>
+<blockquote *ng-if="motto" style="margin: 0;">{{motto}}</blockquote>
 </div>
 </div>
 `
