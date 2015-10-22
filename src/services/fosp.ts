@@ -1,5 +1,5 @@
 import {Connection} from 'node_modules/fosp.js/lib/connection';
-import {SUCCEEDED} from 'node_modules/fosp.js/lib/response';
+import {SUCCEEDED, FAILED} from 'node_modules/fosp.js/lib/response';
 import {Request, AUTH, GET, READ} from 'node_modules/fosp.js/lib/request';
 import {URL as FOSPURL} from 'node_modules/fosp.js/lib/url';
 import {EventEmitter} from 'node_modules/fosp.js/lib/events';
@@ -63,6 +63,9 @@ class FospService extends EventEmitter {
         var url = new FOSPURL(path);
         var req = new Request({method: GET, url: url});
         return this.connection.sendRequest(req).then((response) => {
+            if (response.status === FAILED) {
+                return Promise.reject("Could not load image: " + response.code);
+            }
             var attachment = response.body.attachment || { type: ''};
             if (!attachment.type.match(/^image\//)) {
                 return Promise.reject('Resource ' + path + ' is not an image');
@@ -84,6 +87,9 @@ class FospService extends EventEmitter {
         var url = new FOSPURL(path);
         var req = new Request({method: GET, url: url});
         return this.connection.sendRequest(req).then((response) => {
+            if (response.status === FAILED) {
+                return Promise.reject("Could not load resource " + path + ", code " + response.code);
+            }
             return response.body.data;
         })
     }
