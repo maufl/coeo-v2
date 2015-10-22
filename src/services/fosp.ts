@@ -2,8 +2,9 @@ import {Connection} from 'node_modules/fosp.js/lib/connection';
 import {SUCCEEDED} from 'node_modules/fosp.js/lib/response';
 import {Request, AUTH, GET, READ} from 'node_modules/fosp.js/lib/request';
 import {URL as FOSPURL} from 'node_modules/fosp.js/lib/url';
+import {EventEmitter} from 'node_modules/fosp.js/lib/events';
 
-class FospService {
+class FospService extends EventEmitter {
     currentUser: string;
 
     constructor() {
@@ -14,6 +15,7 @@ class FospService {
     open(domain) {
         return Connection.open({scheme: 'ws', host: domain}).then((con) => {
             this.connection = con
+            this.emit('connected');
             return Promise.resolve();
         });
     }
@@ -33,6 +35,7 @@ class FospService {
         return this.connection.sendRequest(req).then((resp)=> {
             if (resp.status === SUCCEEDED) {
                 this.currentUser = username;
+                this.emit('authenticated');
                 return Promise.resolve();
             }
             return Promise.reject('Authentication failed, code: ' + resp.code);
