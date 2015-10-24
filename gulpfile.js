@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var Builder = require('systemjs-builder');
 
 var PATHS = {
     src: 'src/**/*.ts',
@@ -40,3 +41,15 @@ gulp.task('play', ['ts2js'], function () {
     });
 });
 
+gulp.task('build', ['ts2js'], function() {
+  var builder = new Builder('.', 'system-config.js');
+
+  builder.bundle('coeo/main.js', 'outfile.js')
+    .then(function() {
+      console.log("Build complete");
+    })
+    .catch(function(err) {
+      console.log("Build error");
+      console.log(err);
+    })
+});

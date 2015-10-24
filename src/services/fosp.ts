@@ -1,8 +1,8 @@
-import {Connection} from 'node_modules/fosp.js/lib/connection';
-import {SUCCEEDED, FAILED} from 'node_modules/fosp.js/lib/response';
-import {Request, AUTH, GET, READ} from 'node_modules/fosp.js/lib/request';
-import {URL as FOSPURL} from 'node_modules/fosp.js/lib/url';
-import {EventEmitter} from 'node_modules/fosp.js/lib/events';
+import {Connection} from 'fosp.js/lib/connection';
+import {SUCCEEDED, FAILED} from 'fosp.js/lib/response';
+import {Request, AUTH, GET, READ} from 'fosp.js/lib/request';
+import {URL as FOSPURL} from 'fosp.js/lib/url';
+import {EventEmitter} from 'fosp.js/lib/events';
 
 class FospService extends EventEmitter {
     currentUser: string;
