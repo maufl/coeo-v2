@@ -1,6 +1,6 @@
 import {View, Component} from 'angular2/angular2';
 
-@Component({ selector: 'home-scree' })
+@Component({ selector: 'home-screen' })
 @View({
     template: '<h1>Home</h1>'
 })

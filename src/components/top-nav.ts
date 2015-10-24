@@ -1,7 +1,7 @@
 import {Component, NgIf} from 'angular2/angular2';
 import {SideBar} from './side-bar';
 import {LoginModal} from './login-dialog';
-import {fosp} from './services/fosp';
+import {fosp} from '../services/fosp';
 
 @Component({
     selector: 'top-nav',

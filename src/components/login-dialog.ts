@@ -1,5 +1,5 @@
 import {Component, ElementRef, Inject} from 'angular2/angular2';
-import {fosp} from './services/fosp';
+import {fosp} from '../services/fosp';
 import {FormBuilder, Validators, FORM_DIRECTIVES, ControlGroup} from 'angular2/angular2';
 import {Router} from 'angular2/router';
 

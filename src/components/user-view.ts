@@ -1,6 +1,6 @@
 import {Component, View, NgIf} from 'angular2/angular2';
 import {RouteParams} from 'angular2/router';
-import {fosp} from './services/fosp';
+import {fosp} from '../services/fosp';
 import {CoverPhoto} from './cover-photo';
 
 @Component({

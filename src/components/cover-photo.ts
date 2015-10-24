@@ -1,5 +1,5 @@
 import {Component, Input, NgIf} from 'angular2/angular2';
-import {fosp} from './services/fosp';
+import {fosp} from '../services/fosp';
 
 @Component({
     selector: "cover-photo",
