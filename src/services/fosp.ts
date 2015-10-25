@@ -6,18 +6,32 @@ import {EventEmitter} from 'fosp.js/lib/events';
 
 class FospService extends EventEmitter {
     currentUser: string;
-
-    constructor() {
-        this.connection = null;
-        this.open('localhost');
-    }
+    connection: Connection = null;
+    connecting: bool = false;
 
     open(domain) {
+        this.connecting = true;
         return Connection.open({scheme: 'ws', host: domain}).then((con) => {
             this.connection = con
+            this.connecting = false;
             this.emit('connected');
             return Promise.resolve();
         });
+    }
+
+    awaitConnection() {
+        if (!this.connecting) {
+            return Promise.resolve();
+        }
+        return new Promise((resolve, reject) => {
+            var timeout = setTimeout(() => {
+                reject("Timeout while waiting for the connection.");
+            }, 1500);
+            this.on('connected', () => {
+                clearTimeout(timeout);
+                resolve();
+            })
+        })
     }
 
     authenticate(username, password) {
@@ -40,20 +54,6 @@ class FospService extends EventEmitter {
             }
             return Promise.reject('Authentication failed, code: ' + resp.code);
         });
-    }
-
-    getUser(username) {
-        if (this.connection === null) {
-            return Promise.reject("Not connected");
-        }
-        var url = new FOSPURL(username + "/soc/me");
-        var req = new Request({method: GET, url: url});
-        return this.connection.sendRequest(req).then((resp) => {
-            if (resp.status === SUCCEEDED) {
-                return Promise.resolve(resp.body.data);
-            }
-            return Promise.reject('Response code was ' + resp.code);
-        })
     }
 
     loadImage(path) {
@@ -91,11 +91,13 @@ class FospService extends EventEmitter {
     }
 
     sendRequest(options: Object) {
-        if (this.connection === null) {
+        if (this.connection === null && !this.connecting) {
             return Promise.reject("Not connected");
         }
         var req = new Request(options);
-        return this.connection.sendRequest(req).then((response) => {
+        return this.awaitConnection().then(() => {
+            return this.connection.sendRequest(req);
+        }).then((response) => {
             if (response.status === FAILED) {
                 return Promise.reject("Could not " + options.method + " " + options.url + ", code " + response.code);
             }
@@ -105,3 +107,7 @@ class FospService extends EventEmitter {
 }
 
 export var fosp = new FospService();
+
+fosp.open('localhost').then(() => {
+    fosp.authenticate('alice@localhost.localdomain', 'test1234');
+});
