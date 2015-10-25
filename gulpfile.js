@@ -1,5 +1,7 @@
 var gulp = require('gulp');
 var Builder = require('systemjs-builder');
+var concat = require('gulp-concat');
+var htmlreplace = require('gulp-html-replace');
 
 var PATHS = {
     src: 'src/**/*.ts',
@@ -8,7 +10,7 @@ var PATHS = {
 
 gulp.task('clean', function (done) {
     var del = require('del');
-    del(['dist'], done);
+  del(['dist', 'build'], done);
 });
 
 gulp.task('ts2js', function () {
@@ -44,12 +46,43 @@ gulp.task('play', ['ts2js'], function () {
 gulp.task('build', ['ts2js'], function() {
   var builder = new Builder('.', 'system-config.js');
 
-  builder.bundle('coeo/main.js', 'outfile.js')
+  builder.bundle('coeo/bootstrap.js', 'build/js/app.js', {
+    sourceMaps: false,
+    minify: false,
+    mangle: false,
+  })
     .then(function() {
       console.log("Build complete");
     })
     .catch(function(err) {
       console.log("Build error");
       console.log(err);
-    })
+    });
+
+  gulp.src([
+    'node_modules/systemjs/dist/system.js',
+    'node_modules/traceur/bin/traceur.js',
+    'node_modules/materialize-css/dist/js/materialize.js',
+    'node_modules/angular2/bundles/angular2.js',
+    'node_modules/angular2/bundles/router.dev.js'
+  ])
+    .pipe(gulp.dest('build/js'));
+  gulp.src(['node_modules/materialize-css/dist/css/materialize.css'])
+    .pipe(gulp.dest('build/css'));
+  gulp.src(['index.html'])
+    .pipe(htmlreplace({
+      js: [
+        'js/traceur.js',
+        'js/system.js',
+        'js/angular2.js',
+        'js/router.dev.js',
+        'js/app.js',
+        'js/materialize.js'
+      ],
+      css: {
+        src: 'css/materialize.css',
+        tpl: '<link rel="stylesheet" href="%s" media="screen,projection" />'
+      }
+    }))
+    .pipe(gulp.dest('build'));
 });
