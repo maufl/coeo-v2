@@ -35,8 +35,8 @@ export class CoverPhoto {
         }).catch((error) => {
             console.log("Could not load cover photo ", error);
         });
-        fosp.get(this.userid + '/soc/me/motto').then((motto) => {
-            this.motto = motto;
+        fosp.get(this.userid + '/soc/me/motto').then((object) => {
+            this.motto = object.data;
         })
         return true;
     }

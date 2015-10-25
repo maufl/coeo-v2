@@ -1,6 +1,6 @@
 import {Connection} from 'fosp.js/lib/connection';
 import {SUCCEEDED, FAILED} from 'fosp.js/lib/response';
-import {Request, AUTH, GET, READ} from 'fosp.js/lib/request';
+import {Request, AUTH, GET, READ, LIST} from 'fosp.js/lib/request';
 import {URL as FOSPURL} from 'fosp.js/lib/url';
 import {EventEmitter} from 'fosp.js/lib/events';
 
@@ -80,17 +80,26 @@ class FospService extends EventEmitter {
         });
     }
 
-    get(path) {
+    get(path: string) {
+        var url = new FOSPURL(path);
+        return this.sendRequest({method: GET, url: url});
+    }
+
+    list(url: string) {
+        var url = new FOSPURL(url);
+        return this.sendRequest({method: LIST, url: url});
+    }
+
+    sendRequest(options: Object) {
         if (this.connection === null) {
             return Promise.reject("Not connected");
         }
-        var url = new FOSPURL(path);
-        var req = new Request({method: GET, url: url});
+        var req = new Request(options);
         return this.connection.sendRequest(req).then((response) => {
             if (response.status === FAILED) {
-                return Promise.reject("Could not load resource " + path + ", code " + response.code);
+                return Promise.reject("Could not " + options.method + " " + options.url + ", code " + response.code);
             }
-            return response.body.data;
+            return response.body;
         })
     }
 }
