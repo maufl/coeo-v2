@@ -3,10 +3,11 @@ import {SideBar} from './side-bar';
 import {LoginModal} from './login-dialog';
 import {fosp} from '../services/fosp';
 import {User} from '../models/user';
+import {Avatar} from './avatar';
 
 @Component({
     selector: 'top-nav',
-    directives: [LoginModal, SideBar, NgIf],
+    directives: [LoginModal, SideBar, Avatar, NgIf],
     template: `
 <nav>
 <side-bar #side-bar></side-bar>
@@ -18,7 +19,9 @@ import {User} from '../models/user';
 <ul class="right hide-on-med-and-down">
 <li><a (click)="loginmodal.open()">
 <i *ng-if="!currentUser" class="material-icons">account_circle</i>
-<div *ng-if="currentUser" [style.background-image]="'url('+currentUser.profilePicture.image.src+')'" class="card-panel" style="height: 42px; width: 42px; background-size: cover;"></div>
+<i style="padding-top: 10px;">
+<avatar *ng-if="currentUser" [user]="currentUser" [size]="'42px'" />
+</i>
 </a></li>
 <login-modal #loginmodal ></login-modal>
 </ul>
@@ -30,7 +33,7 @@ export class TopNav {
     currentUser: User;
 
     onInit() {
-        fosp.on('userChanged', () => {
+        fosp.on('authenticated', () => {
             this.currentUser = fosp.currentUser;
             this.currentUser.profilePicture.load();
         })

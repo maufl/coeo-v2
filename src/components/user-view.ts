@@ -25,8 +25,6 @@ export class UserView {
     user: User;
 
     constructor(routeParams: RouteParams) {
-        User.get(routeParams.params.id).then((user) => {
-            this.user = user;
-        });
+        this.user = User.get(routeParams.params.id);
     }
 }

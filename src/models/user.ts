@@ -17,12 +17,12 @@ export class User {
 
     static get(id: string): Promise {
         var user = cache.get(User, id);
-        if (user) {
-            return Promise.resolve(user);
+        if (!user) {
+            user = new User(id);
+            cache.set(user);
         }
-        user = new User(id);
-        cache.set(user);
-        return user.load();
+        user.load();
+        return user;
     }
 
     load() {

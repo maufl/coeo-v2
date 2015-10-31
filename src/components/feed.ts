@@ -7,9 +7,6 @@ import {Post} from './post';
     selector: 'feed',
     directives: [Post, NgFor],
     template: `
-<div class="card">
-<h4>{{feed.title}}</h4>
-</div>
 <post *ng-for="#post of feed.posts" [post]="post"></post>
 `
 })

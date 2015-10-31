@@ -1,7 +1,9 @@
 import {fosp} from '../services/fosp';
+import {User} from './user';
 
 export class Post {
     url: string;
+    owner: User;
 
     private constructor(url: string) {
         this.url = url;
@@ -15,7 +17,7 @@ export class Post {
 
     load() {
         fosp.get(this.url).then((object) => {
-            this.owner = object.owner;
+            this.owner = User.get(object.owner);
             this.text = object.data;
             return true;
         })
