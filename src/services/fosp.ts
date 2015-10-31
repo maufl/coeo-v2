@@ -3,9 +3,10 @@ import {SUCCEEDED, FAILED} from 'fosp.js/lib/response';
 import {Request, AUTH, GET, READ, LIST} from 'fosp.js/lib/request';
 import {URL as FOSPURL} from 'fosp.js/lib/url';
 import {EventEmitter} from 'fosp.js/lib/events';
+import {User} from '../models/user';
 
 class FospService extends EventEmitter {
-    currentUser: string;
+    currentUser: User;
     connection: Connection = null;
     connecting: bool = false;
 
@@ -43,7 +44,10 @@ class FospService extends EventEmitter {
             }
         }
         return this.sendRequest({method: AUTH, body: body}).then(() => {
-            this.currentUser = username;
+            User.get(username).then((user) => {
+                this.currentUser = user;
+                this.emit('userChanged');
+            })
             this.emit('authenticated');
             return true
         });

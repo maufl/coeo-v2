@@ -1,4 +1,5 @@
 import {fosp} from '../services/fosp';
+import {cache} from '../services/cache';
 import {Image} from './image';
 
 export class User {
@@ -15,7 +16,11 @@ export class User {
     }
 
     static get(id: string) {
-        var user = new User(id);
+        var user = cache.get(User, id);
+        if (user) {
+            return user;
+        }
+        user = new User(id);
         return user.load();
     }
 
