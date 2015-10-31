@@ -35,24 +35,17 @@ class FospService extends EventEmitter {
     }
 
     authenticate(username, password) {
-        if (this.connection === null) {
-            return Promise.reject("Not connected");
-        }
-        var req = new Request({method: AUTH});
         var initialResponse = unescape(encodeURIComponent(`\0${username}\0${password}`));
-        req.body = {
+        var body = {
             sasl: {
                 mechanism: "PLAIN",
                 'initial-response': initialResponse
             }
         }
-        return this.connection.sendRequest(req).then((resp)=> {
-            if (resp.status === SUCCEEDED) {
-                this.currentUser = username;
-                this.emit('authenticated');
-                return Promise.resolve();
-            }
-            return Promise.reject('Authentication failed, code: ' + resp.code);
+        return this.sendRequest({method: AUTH, body: body}).then(() => {
+            this.currentUser = username;
+            this.emit('authenticated');
+            return true
         });
     }
 
