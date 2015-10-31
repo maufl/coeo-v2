@@ -85,7 +85,3 @@ class FospService extends EventEmitter {
 }
 
 export var fosp = new FospService();
-
-fosp.open('localhost').then(() => {
-    fosp.authenticate('alice@localhost.localdomain', 'test1234');
-});
