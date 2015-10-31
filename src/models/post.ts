@@ -18,6 +18,8 @@ export class Post {
     load() {
         fosp.get(this.url).then((object) => {
             this.owner = User.get(object.owner);
+            this.created = new Date(object.btime);
+            this.updated = new Date(object.mtime);
             this.text = object.data;
             return true;
         })
