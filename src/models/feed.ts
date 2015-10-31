@@ -23,6 +23,7 @@ export class Feed {
             this.description = object.data.description;
             return fosp.list(this.url)
         }).then((list) => {
+            this.posts = [];
             list.forEach((postName) => {
                 this.posts.push(Post.get(this.url + '/' + postName));
             })

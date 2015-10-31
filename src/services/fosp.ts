@@ -1,6 +1,6 @@
 import {Connection} from 'fosp.js/lib/connection';
 import {SUCCEEDED, FAILED} from 'fosp.js/lib/response';
-import {Request, AUTH, GET, READ, LIST} from 'fosp.js/lib/request';
+import {Request, AUTH, GET, READ, LIST, CREATE} from 'fosp.js/lib/request';
 import {URL as FOSPURL} from 'fosp.js/lib/url';
 import {EventEmitter} from 'fosp.js/lib/events';
 import {User} from '../models/user';
@@ -63,6 +63,11 @@ class FospService extends EventEmitter {
     read(url: string) {
         var url = new FOSPURL(url);
         return this.sendRequest({method: READ, url: url});
+    }
+
+    create(url: string, body: any) {
+        var url = new FOSPURL(url);
+        return this.sendRequest({method: CREATE, url: url, body: body})
     }
 
     sendRequest(options: Object) {

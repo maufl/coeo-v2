@@ -4,6 +4,9 @@ import {User} from './user';
 export class Post {
     url: string;
     owner: User;
+    created: Date;
+    updated: Date;
+    text: string;
 
     private constructor(url: string) {
         this.url = url;
@@ -13,6 +16,10 @@ export class Post {
         var post = new Post(url);
         post.load();
         return post;
+    }
+
+    static create(url: string, text: string) {
+        return fosp.create(url, { data: text });
     }
 
     load() {
