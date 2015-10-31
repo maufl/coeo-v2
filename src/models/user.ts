@@ -1,12 +1,17 @@
 import {fosp} from '../services/fosp';
+import {Image} from './image';
 
 export class User {
     id: string;
     motto: string;
     fullName: string;
+    profilePicture: Image;
+    coverPicture: Image;
 
     constructor(id: string) {
         this.id = id;
+        this.profilePicture = new Image(this.id + '/soc/photos/profile');
+        this.coverPicture = new Image(this.id + '/soc/photos/cover');
     }
 
     static get(id: string) {

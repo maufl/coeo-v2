@@ -90,6 +90,11 @@ class FospService extends EventEmitter {
         return this.sendRequest({method: LIST, url: url});
     }
 
+    read(url: string) {
+        var url = new FOSPURL(url);
+        return this.sendRequest({method: READ, url: url});
+    }
+
     sendRequest(options: Object) {
         if (this.connection === null && !this.connecting) {
             return Promise.reject("Not connected");

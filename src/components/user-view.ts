@@ -12,7 +12,7 @@ import {User} from '../models/user';
 <div class="container">
 <div class="row">
 <div class="col s12">
-<cover-photo *ng-if="user" [userid]="user.id" [username]="user.fullName"></cover-photo>
+<cover-photo *ng-if="user" [user]="user"></cover-photo>
 </div>
 <div class="col s12">
 <feed *ng-if="user" [userid]="user.id" [feed-name]="'blog'"></feed>
