@@ -56,30 +56,6 @@ class FospService extends EventEmitter {
         });
     }
 
-    loadImage(path) {
-        if (this.connection === null) {
-            return Promise.reject("Not connected");
-        }
-        var url = new FOSPURL(path);
-        var req = new Request({method: GET, url: url});
-        return this.connection.sendRequest(req).then((response) => {
-            if (response.status === FAILED) {
-                return Promise.reject("Could not load image: " + response.code);
-            }
-            var attachment = response.body.attachment || { type: ''};
-            if (!attachment.type.match(/^image\//)) {
-                return Promise.reject('Resource ' + path + ' is not an image');
-            }
-            var req = new Request({method: READ, url: url});
-            return this.connection.sendRequest(req).then((response) => {
-                var blob = new Blob([response.body], {type: attachment.type})
-                var img = new Image()
-                img.src = URL.createObjectURL(blob)
-                return Promise.resolve(img);
-            });
-        });
-    }
-
     get(path: string) {
         var url = new FOSPURL(path);
         return this.sendRequest({method: GET, url: url});

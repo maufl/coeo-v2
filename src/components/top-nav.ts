@@ -2,6 +2,7 @@ import {Component, NgIf} from 'angular2/angular2';
 import {SideBar} from './side-bar';
 import {LoginModal} from './login-dialog';
 import {fosp} from '../services/fosp';
+import {Image} from '../models/image';
 
 @Component({
     selector: 'top-nav',
@@ -16,8 +17,8 @@ import {fosp} from '../services/fosp';
 <a href="#" class="brand-logo">Coeo</a>
 <ul class="right hide-on-med-and-down">
 <li><a href="#" (click)="loginmodal.open(); $event.preventDefault()">
-<i *ng-if="!profilePicture" class="material-icons">account_circle</i>
-<div *ng-if="profilePicture" [style.background-image]="'url('+profilePicture.src+')'" class="card-panel" style="height: 42px; width: 42px; background-size: cover;"></div>
+<i *ng-if="!profilePicture.image.src" class="material-icons">account_circle</i>
+<div *ng-if="profilePicture.image.src" [style.background-image]="'url('+profilePicture.image.src+')'" class="card-panel" style="height: 42px; width: 42px; background-size: cover;"></div>
 </a></li>
 <login-modal #loginmodal ></login-modal>
 </ul>
@@ -26,9 +27,10 @@ import {fosp} from '../services/fosp';
 `
 })
 export class TopNav {
-    profilePicture: Image = null;
+    profilePicture: Image;
 
     onInit() {
+        this.profilePicture = new Image(fosp.currentUser + "/soc/photos/profile");
         if (fosp.currentUser) {
             this.loadProfilePicture();
         }
@@ -36,8 +38,8 @@ export class TopNav {
     }
 
     loadProfilePicture() {
-        fosp.loadImage(fosp.currentUser + "/soc/photos/profile").then((img) => {
-            this.profilePicture = img;
-        })
+        Image.get(fosp.currentUser + "/soc/photos/profile").then((picture) => {
+            this.profilePicture = picture;
+        });
     }
 }

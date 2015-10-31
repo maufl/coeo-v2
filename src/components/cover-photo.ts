@@ -1,5 +1,4 @@
 import {Component, Input, NgIf} from 'angular2/angular2';
-import {fosp} from '../services/fosp';
 import {User} from '../models/user';
 
 @Component({
