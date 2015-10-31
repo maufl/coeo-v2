@@ -6,7 +6,7 @@ class Cache {
     }
 
     set(model: any) {
-        this.map[`${model.contstructor.name}:${model.id}`] = model;
+        this.map[`${model.constructor.name}:${model.id}`] = model;
     }
 }
 

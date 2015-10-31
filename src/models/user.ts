@@ -15,12 +15,13 @@ export class User {
         this.coverPicture = new Image(this.id + '/soc/photos/cover');
     }
 
-    static get(id: string) {
+    static get(id: string): Promise {
         var user = cache.get(User, id);
         if (user) {
-            return user;
+            return Promise.resolve(user);
         }
         user = new User(id);
+        cache.set(user);
         return user.load();
     }
 
