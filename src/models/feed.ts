@@ -13,8 +13,10 @@ export class Feed extends Base {
 
     load() {
         return super.load().then((object) => {
-            this.title = object.data.title;
-            this.description = object.data.description;
+            if (typeof object.data === 'object') {
+                this.title = object.data.title;
+                this.description = object.data.description;
+            }
             return fosp.list(this.id)
         }).then((list) => {
             this.posts = [];

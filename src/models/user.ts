@@ -21,7 +21,9 @@ export class User extends Base {
         }
         this.$loading = true;
         return fosp.get(this.id + "/soc/me").then((object) => {
-            this.fullName = object.data.fullName;
+            if (typeof object.data === 'object') {
+                this.fullName = object.data.fullName;
+            }
             this.$loading = false;
             this.$loaded = true;
             fosp.get(this.id + "/soc/me/motto").then((object) => {

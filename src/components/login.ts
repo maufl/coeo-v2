@@ -1,11 +1,11 @@
 import {Component, ElementRef, Inject} from 'angular2/angular2';
 import {fosp} from '../services/fosp';
 import {FormBuilder, Validators, FORM_DIRECTIVES, ControlGroup} from 'angular2/angular2';
-import {Router} from 'angular2/router';
+import {Router, RouterLink} from 'angular2/router';
 
 @Component({
     selector: 'login',
-    directives: [FORM_DIRECTIVES],
+    directives: [FORM_DIRECTIVES, RouterLink],
     template: `
 <div class="container">
 <div class="card">
@@ -21,6 +21,7 @@ import {Router} from 'angular2/router';
 </form>
 </div>
 <div class="card-action">
+<a class="btn-flat" [router-link]="['/Signup']">Create new account</a>
 <a class="btn-flat" (click)="login()">Login</a>
 </div>
 </div>
@@ -38,6 +39,7 @@ export class Login {
 
     login() {
         var {username, password} = this.loginForm.value;
+        var domain = username.split('@')[1];
         fosp.open('localhost').then(()=>{
             fosp.authenticate(username, password).then(()=>{
                 this.router.navigate(['/User', { id: username }]);
