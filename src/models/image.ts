@@ -12,6 +12,24 @@ export class Image extends Base {
         this.image = new window.Image();
     }
 
+    write(file) {
+        var reader = new FileReader();
+        var resolve, reject;
+        var promise = new Promise((res,rej) => { resolve = res; reject = rej });
+        reader.onload = () => {
+            resolve(fosp.write(this.id, reader.result).then(() => {
+                return fosp.patch(this.id, { attachment: { name: file.name, size: file.size, type: file.type }}).then(() => {
+                    this.$loaded = false;
+                    this.load();
+                    return true;
+                })
+            }))
+        };
+        reader.onerror = (error) => { reject(error) };
+        reader.readAsArrayBuffer(file);
+        return promise;
+    }
+
     load() {
         return super.load().then(({ attachment = {}}) => {
             if (attachment.type !== "image/jpeg") {

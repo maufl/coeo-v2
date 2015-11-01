@@ -37,6 +37,7 @@ export class Base {
             return obj;
         }).catch((error) => {
             this.$loading = false;
+            return Promise.reject(error);
         })
     }
 }

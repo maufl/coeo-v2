@@ -1,4 +1,4 @@
-import {Component, Input, NgFor} from 'angular2/angular2';
+import {Component, Input, NgFor, NgIf} from 'angular2/angular2';
 import {FORM_DIRECTIVES} from 'angular2/angular2';
 import {fosp} from '../services/fosp';
 import {Feed} from '../models/feed';
@@ -7,7 +7,7 @@ import {Post as PostModel} from '../models/post';
 
 @Component({
     selector: 'feed',
-    directives: [Post, NgFor, FORM_DIRECTIVES],
+    directives: [Post, NgFor, NgIf, FORM_DIRECTIVES],
     template: `
 <div class="card">
 <div class="card-content">
