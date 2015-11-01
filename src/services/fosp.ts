@@ -45,7 +45,6 @@ class FospService extends EventEmitter {
         }
         return this.sendRequest({method: AUTH, body: body}).then(() => {
             this.currentUser = User.get(username);
-            this.currentUser.load();
             this.emit('authenticated');
             return true
         });

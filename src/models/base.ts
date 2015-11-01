@@ -7,8 +7,8 @@ export class Base {
     created: Date;
     updated: Date;
     owner: User;
-    $isLoaded: bool = false;
-    $isLoading: bool = false;
+    $loaded: bool = false;
+    $loading: bool = false;
 
     constructor(id: string) {
         this.id = id;
@@ -24,19 +24,19 @@ export class Base {
     }
 
     load() {
-        if (this.$isLoading || this.$isLoaded) {
+        if (this.$loading || this.$loaded) {
             return Promise.reject();
         }
-        this.$isLoading = true;
+        this.$loading = true;
         return fosp.get(this.id).then((obj) => {
             this.owner = User.get(obj.owner);
             this.created = new Date(obj.btime);
             this.updated = new Date(obj.mtime);
-            this.$isLoading = false;
-            this.$isLoaded = true;
+            this.$loading = false;
+            this.$loaded = true;
             return obj;
         }).catch((error) => {
-            this.$isLoading = false;
+            this.$loading = false;
         })
     }
 }

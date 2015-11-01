@@ -26,6 +26,8 @@ export class Post {
     @Input() post: Post;
 
     onInit() {
-        this.post.load();
+        this.post.load().then(() => {
+            this.post.owner.load();
+        });
     }
 }

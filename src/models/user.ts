@@ -16,18 +16,20 @@ export class User extends Base {
     }
 
     load() {
-        if (this.$isLoading || this.$isLoaded) {
+        if (this.$loading || this.$loaded) {
             return Promise.reject();
         }
-        this.$isLoading = true;
+        this.$loading = true;
         return fosp.get(this.id + "/soc/me").then((object) => {
             this.fullName = object.data.fullName;
+            this.$loading = false;
+            this.$loaded = true;
             fosp.get(this.id + "/soc/me/motto").then((object) => {
-                this.$isLoading = false;
-                this.$isLoaded = true;
                 this.motto = object.data;
             });
             return this;
+        }).catch((error) => {
+            this.$loading = false;
         });
     }
 }

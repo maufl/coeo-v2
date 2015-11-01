@@ -35,6 +35,7 @@ export class TopNav {
     onInit() {
         fosp.on('authenticated', () => {
             this.currentUser = fosp.currentUser;
+            this.currentUser.load();
             this.currentUser.profilePicture.load();
         })
     }
