@@ -26,10 +26,8 @@ export class User {
     }
 
     load() {
-        return fosp.get(this.id).then(() => {
-            fosp.get(this.id + "/soc/me").then((object) => {
-                this.fullName = object.data.fullName;
-            });
+        return fosp.get(this.id + "/soc/me").then((object) => {
+            this.fullName = object.data.fullName;
             fosp.get(this.id + "/soc/me/motto").then((object) => {
                 this.motto = object.data;
             });
