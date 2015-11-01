@@ -11,4 +11,8 @@ import {User} from '../models/user';
 export class Avatar {
     @Input() size: string;
     @Input() user: User;
+
+    onInit() {
+        this.user.profilePicture.load();
+    }
 }

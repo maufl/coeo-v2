@@ -94,6 +94,18 @@ class FospService extends EventEmitter {
             return response.body;
         })
     }
+
+    ensureExistence(id: string) {
+        if (id.indexOf('/') === id.length - 1) {
+            return Promise.resolve(true);
+        }
+        var parent = id.split('/').slice(0, -1).join('/');
+        return this.ensureExistence(parent).then(() => {
+            return this.get(id).catch(() => {
+                return this.create(id, {});
+            })
+        })
+    }
 }
 
 export var fosp = new FospService();

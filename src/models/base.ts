@@ -23,6 +23,10 @@ export class Base {
         return obj;
     }
 
+    ensureExistence() {
+        return fosp.ensureExistence(this.id);
+    }
+
     load() {
         if (this.$loading || this.$loaded) {
             return Promise.reject();

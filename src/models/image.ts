@@ -17,11 +17,13 @@ export class Image extends Base {
         var resolve, reject;
         var promise = new Promise((res,rej) => { resolve = res; reject = rej });
         reader.onload = () => {
-            resolve(fosp.write(this.id, reader.result).then(() => {
-                return fosp.patch(this.id, { attachment: { name: file.name, size: file.size, type: file.type }}).then(() => {
-                    this.$loaded = false;
-                    this.load();
-                    return true;
+            resolve(this.ensureExistence().then(() => {
+                return fosp.write(this.id, reader.result).then(() => {
+                    return fosp.patch(this.id, { attachment: { name: file.name, size: file.size, type: file.type }}).then(() => {
+                        this.$loaded = false;
+                        this.load();
+                        return true;
+                    })
                 })
             }))
         };
