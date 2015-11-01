@@ -1,32 +1,20 @@
 import {fosp} from '../services/fosp';
 import {User} from './user';
+import {Base} from './base';
 
-export class Post {
-    url: string;
-    owner: User;
-    created: Date;
-    updated: Date;
+export class Post extends Base{
     text: string;
 
-    private constructor(url: string) {
-        this.url = url;
+    private constructor(id: string) {
+        super(id);
     }
 
-    static get(url: string) {
-        var post = new Post(url);
-        post.load();
-        return post;
-    }
-
-    static create(url: string, text: string) {
-        return fosp.create(url, { data: text });
+    static create(id: string, text: string) {
+        return fosp.create(id, { data: text });
     }
 
     load() {
-        fosp.get(this.url).then((object) => {
-            this.owner = User.get(object.owner);
-            this.created = new Date(object.btime);
-            this.updated = new Date(object.mtime);
+        return super.load().then((object) => {
             this.text = object.data;
             return true;
         })

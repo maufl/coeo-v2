@@ -1,24 +1,19 @@
 import {fosp} from '../services/fosp';
+import {Base} from './base';
 
-export class Image {
-    id: string;
+export class Image extends Base {
     type: string;
     size: number;
     name: string;
     image: Image;
 
     constructor(id: string) {
-        this.id = id;
+        super(id);
         this.image = new window.Image();
     }
 
-    static get(id: string) {
-        var image = new Image(id);
-        return image.load();
-    }
-
     load() {
-        return fosp.get(this.id).then(({ attachment = {}}) => {
+        return super.load().then(({ attachment = {}}) => {
             if (attachment.type !== "image/jpeg") {
                 return Promise.reject('Resource ' + path + ' is not an image');
             }

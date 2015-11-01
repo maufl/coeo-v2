@@ -1,31 +1,25 @@
 import {fosp} from '../services/fosp';
 import {Post} from './post';
+import {Base} from './base';
 
-export class Feed {
-    url: string;
+export class Feed extends Base {
     title: string;
     description: string;
     posts: Array = [];
 
-    private constructor(url: string) {
-        this.url = url;
-    }
-
-    static get(url: string) {
-        var feed = new Feed(url);
-        feed.load();
-        return feed;
+    private constructor(id: string) {
+        super(id);
     }
 
     load() {
-        return fosp.get(this.url).then((object) => {
+        return super.load().then((object) => {
             this.title = object.data.title;
             this.description = object.data.description;
-            return fosp.list(this.url)
+            return fosp.list(this.id)
         }).then((list) => {
             this.posts = [];
             list.forEach((postName) => {
-                this.posts.push(Post.get(this.url + '/' + postName));
+                this.posts.push(Post.get(this.id + '/' + postName));
             })
             return true;
         })

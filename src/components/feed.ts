@@ -29,6 +29,7 @@ export class Feed {
 
     onInit() {
         this.feed = Feed.get(this.userid + "/soc/feed/" + this.feedName);
+        this.feed.load();
     }
 
     submitPost() {

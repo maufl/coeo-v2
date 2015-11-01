@@ -26,5 +26,6 @@ export class UserView {
 
     constructor(routeParams: RouteParams) {
         this.user = User.get(routeParams.params.id);
+        this.user.load();
     }
 }

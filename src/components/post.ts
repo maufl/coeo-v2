@@ -24,4 +24,8 @@ import {User} from '../models/user';
 })
 export class Post {
     @Input() post: Post;
+
+    onInit() {
+        this.post.load();
+    }
 }
