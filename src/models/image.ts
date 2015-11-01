@@ -32,8 +32,8 @@ export class Image extends Base {
 
     load() {
         return super.load().then(({ attachment = {}}) => {
-            if (attachment.type !== "image/jpeg") {
-                return Promise.reject('Resource ' + path + ' is not an image');
+            if (typeof attachment.type !== 'string' || !attachment.type.match(/image\//)) {
+                return Promise.reject('Resource ' + this.id + ' is not an image');
             }
             this.type = attachment.type;
             this.size = attachment.size;
