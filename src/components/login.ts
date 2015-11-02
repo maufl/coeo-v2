@@ -31,9 +31,11 @@ import {Router, RouterLink} from 'angular2/router';
 export class Login {
     constructor(private element:ElementRef, @Inject(Router) router: Router) {
         this.router = router;
+        var username = localStorage.getItem('coeo.username');
+        var password = localStorage.getItem('coeo.password');
         this.loginForm = (new FormBuilder()).group({
-            'username': ['bob@localhost.localdomain', Validators.required],
-            'password': ['test1234', Validators.required]
+            'username': [ username || '', Validators.required],
+            'password': [ password || '', Validators.required]
         });
     }
 
@@ -42,6 +44,8 @@ export class Login {
         var domain = username.split('@')[1];
         fosp.open(domain).then(()=>{
             fosp.authenticate(username, password).then(()=>{
+                localStorage.setItem('coeo.username', username);
+                localStorage.setItem('coeo.password', password);
                 this.router.navigate(['/User', { id: username }]);
             }).catch((err)=>{
                 console.log(err);
