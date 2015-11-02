@@ -37,7 +37,7 @@ export class Feed {
         var teaser = this.newPostText.replace('!@#$%^&*(){}[]\'"?|\/,.<>;:','').split(/\s+/).slice(0, 3).join('-');
         var title = `${date.getYear()}-${date.getMonth()}-${date.getDay()}-${teaser}`;
         PostModel.create(this.userid+"/soc/feed/"+this.feedName+"/"+title, this.newPostText).then(() => {
-            this.feed.load();
+            this.feed.reload();
             this.newPostText = "";
         })
     }

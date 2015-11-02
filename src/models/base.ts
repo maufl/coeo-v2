@@ -42,6 +42,11 @@ export class Base {
         }).catch((error) => {
             this.$loading = false;
             return Promise.reject(error);
-        })
+        });
+    }
+
+    reload() {
+        this.$loaded = false;
+        this.load();
     }
 }
