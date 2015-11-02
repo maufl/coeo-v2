@@ -40,7 +40,7 @@ export class Login {
     login() {
         var {username, password} = this.loginForm.value;
         var domain = username.split('@')[1];
-        fosp.open('localhost').then(()=>{
+        fosp.open(domain).then(()=>{
             fosp.authenticate(username, password).then(()=>{
                 this.router.navigate(['/User', { id: username }]);
             }).catch((err)=>{
