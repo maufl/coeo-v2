@@ -9,11 +9,13 @@ import {Avatar} from './avatar';
     selector: 'top-nav',
     directives: [SideBar, Avatar, NgIf, RouterLink],
     template: `
+<div class="navbar-fixed">
 <nav>
 <side-bar #side-bar></side-bar>
 <div class="nav-wrapper teal">
 <ul class="left">
-<li><a (click)="sideBar.show()"><i class="material-icons">menu</i></a></li>
+<li><a class="button-collapse hide-on-med-and-up" (click)="sideBar.show()"><i class="material-icons">menu</i></a></li>
+<li><a class="hide-on-small-only" (click)="sideBar.show()"><i class="material-icons">menu</i></a></li>
 </ul>
 <a href="#" class="brand-logo">Coeo</a>
 <ul class="right hide-on-med-and-down">
@@ -28,6 +30,7 @@ import {Avatar} from './avatar';
 </ul>
 </div>
 </nav>
+</div>
 `
 })
 export class TopNav {
