@@ -16,6 +16,7 @@
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-html-replace": "^1.5.4",
+    "gulp-sass": "^2.1.0",
     "gulp-typescript": "^2.8.0",
     "open": "0.0.5",
     "serve-static": "^1.10.0",

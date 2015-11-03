@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var Builder = require('systemjs-builder');
 var concat = require('gulp-concat');
 var htmlreplace = require('gulp-html-replace');
+var sass = require('gulp-sass');
 
 var PATHS = {
     src: 'src/**/*.ts',
@@ -27,7 +28,13 @@ gulp.task('ts2js', function () {
     return tsResult.js.pipe(gulp.dest('dist'));
 });
 
-gulp.task('play', ['ts2js'], function () {
+gulp.task('sass', function() {
+  gulp.src('src/styles/app.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('dist/styles'));
+})
+
+gulp.task('play', ['ts2js', 'sass'], function () {
     var http = require('http');
     var connect = require('connect');
     var serveStatic = require('serve-static');
@@ -35,7 +42,8 @@ gulp.task('play', ['ts2js'], function () {
 
     var port = 9000, app;
 
-    gulp.watch(PATHS.src, ['ts2js']);
+  gulp.watch(PATHS.src, ['ts2js']);
+  gulp.watch('src/**/*.scss', ['sass']);
 
     app = connect().use(serveStatic(__dirname));
     http.createServer(app).listen(port, function () {
@@ -43,7 +51,7 @@ gulp.task('play', ['ts2js'], function () {
     });
 });
 
-gulp.task('build', ['ts2js'], function() {
+gulp.task('build', ['ts2js', 'sass'], function() {
   var builder = new Builder('.', 'system-config.js');
 
   builder.bundle('coeo/bootstrap.js', 'build/js/app.js', {
@@ -68,7 +76,7 @@ gulp.task('build', ['ts2js'], function() {
     'node_modules/angular2/bundles/router.dev.js'
   ])
     .pipe(gulp.dest('build/js'));
-  gulp.src(['node_modules/materialize-css/dist/css/materialize.css'])
+  gulp.src(['dist/css/app.css'])
     .pipe(gulp.dest('build/css'));
   gulp.src(['index.html'])
     .pipe(htmlreplace({
@@ -82,7 +90,7 @@ gulp.task('build', ['ts2js'], function() {
         'js/materialize.js'
       ],
       css: {
-        src: 'css/materialize.css',
+        src: 'css/app.css',
         tpl: '<link rel="stylesheet" href="%s" media="screen,projection" />'
       }
     }))

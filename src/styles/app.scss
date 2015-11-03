@@ -1,0 +1,24 @@
+@import "../../node_modules/materialize-css/sass/materialize.scss";
+
+
+.modal {
+    color: rgba(0, 0, 0, 0.87);
+ }
+   .side-nav {
+   padding-bottom: 0;
+   }
+   .flex-column {
+   display: flex;
+   flex-direction: column;
+   }
+   .flex {
+   flex: 1;
+   }
+  html, body {
+      position: absolute;
+      min-height: 100%;
+      width: 100%;
+  }
+  body {
+      background-color: #eceff1;
+  }
