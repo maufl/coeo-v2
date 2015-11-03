@@ -4,7 +4,9 @@ import {User} from '../models/user';
 @Component({
     selector: 'avatar',
     template: `
-<div [style.background-image]="'url('+user.profilePicture.image.src+')'" [style.height]="size" [style.width]="size" class="z-depth-1" style="border-radius: 2px; background-size: cover;">
+<div [style.height]="size" [style.width]="size" class="z-depth-1" style="border-radius: 2px; padding: 2px; background: white;">
+<div [style.background-image]="'url('+user.profilePicture.image.src+')'" style="border-radius: 1px; background-size: cover; height: 100%; width: 100%;">
+</div>
 </div>
 `
 })
