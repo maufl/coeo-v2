@@ -9,13 +9,24 @@ import {Avatar} from './avatar';
     selector: 'top-nav',
     directives: [SideBar, Avatar, NgIf, RouterLink],
     template: `
-<nav>
 <side-bar #side-bar></side-bar>
+<div class="left card-panel hide-on-small-only" style="margin: 10px; padding: 10px">
+<a (click)="sideBar.show()" style="display: block; height: 24px"><i class="material-icons black-text">menu</i></a>
+</div>
+<div class="right hide-on-small-only" style="margin: 10px;">
+<a class="card-panel" style="display: block; margin: 0; padding: 10px; width: 63px; height: 63px" *ng-if="!currentUser" [router-link]="['/Login']">
+<i class="material-icons" style="font-size: 43px;">account_circle</i>
+</a>
+<a *ng-if="currentUser" [router-link]="['/User', {id: currentUser.id}]">
+<avatar [user]="currentUser" [size]="'63px'" />
+</a>
+</div>
+<nav class="hide-on-med-and-up">
 <div class="nav-wrapper teal">
-<ul class="left">
-<li><a (click)="sideBar.show()"><i class="material-icons">menu</i></a></li>
+<ul>
+<li><a class="button-collapse" (click)="sideBar.show()"><i class="material-icons">menu</i></a></li>
 </ul>
-<a href="#" class="brand-logo">Coeo</a>
+<a class="brand-logo">Coeo</a>
 <ul class="right hide-on-med-and-down">
 <li>
 <a *ng-if="!currentUser" [router-link]="['/Login']">
