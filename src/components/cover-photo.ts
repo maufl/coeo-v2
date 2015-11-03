@@ -9,7 +9,7 @@ import {Avatar} from './avatar';
 <div class="card">
 <avatar (dragover)="prevent($event)" (drop)="updateProfilePicture($event)" [size]="'100px'" [user]="user" style="z-index: 1; position: absolute; top: 0; right: 0; margin: 20px;"></avatar>
 <div (dragover)="prevent($event)" (drop)="updateCoverPicture($event)" [style.background-image]="'url('+user.coverPicture.image.src+')'" class="card-image" style="background-size: cover; background-position: center center; height: 200px; overflow: hidden;">
-<span class="card-title" style="color: black;">{{user.fullName}}</span>
+<span class="card-title" style="color: black; text-shadow: 0px 0px 4px white;">{{user.fullName}}</span>
 </div>
 <div class="card-content">
 <i class="material-icons right activator" *ng-if="user.isCurrentUser()">more_vert</i>
