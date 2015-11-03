@@ -60,6 +60,7 @@ gulp.task('build', ['ts2js'], function() {
     });
 
   gulp.src([
+    'node_modules/jquery/dist/jquery.js',
     'node_modules/systemjs/dist/system.js',
     'node_modules/traceur/bin/traceur.js',
     'node_modules/materialize-css/dist/js/materialize.js',
@@ -77,6 +78,7 @@ gulp.task('build', ['ts2js'], function() {
         'js/angular2.js',
         'js/router.dev.js',
         'js/app.js',
+        'js/jquery.js',
         'js/materialize.js'
       ],
       css: {
