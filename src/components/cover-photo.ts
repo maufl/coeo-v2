@@ -12,10 +12,10 @@ import {Avatar} from './avatar';
 <span class="card-title" style="color: black;">{{user.fullName}}</span>
 </div>
 <div class="card-content">
-<i class="material-icons right activator">more_vert</i>
+<i class="material-icons right activator" *ng-if="user.isCurrentUser()">more_vert</i>
 <blockquote style="margin: 0; display: inline;" class="clearfix">{{user.motto}}</blockquote>
 </div>
-<div class="card-reveal">
+<div class="card-reveal" *ng-if="user.isCurrentUser()">
 <span class="card-title black-text">Settings<i class="material-icons right">close</i></span>
 <div class="input-field">
 <label>
@@ -44,6 +44,9 @@ export class CoverPhoto {
 
     updateProfilePicture(event) {
         this.prevent(event);
+        if (!this.user.isCurrentUser()) {
+            return;
+        }
         if (!(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length === 1)) {
             return;
         }
@@ -53,6 +56,9 @@ export class CoverPhoto {
 
     updateCoverPicture(event) {
         this.prevent(event);
+        if (!this.user.isCurrentUser()) {
+            return;
+        }
         if (!(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length === 1)) {
             return;
         }
@@ -61,7 +67,9 @@ export class CoverPhoto {
     }
 
     saveUser() {
-        console.debug(this.user);
+        if (!this.user.isCurrentUser()) {
+            return;
+        }
         this.user.patch().then(() => {
             this.user.reload();
         })

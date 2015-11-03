@@ -1,5 +1,4 @@
 import {fosp} from '../services/fosp';
-import {cache} from '../services/cache';
 import {Image} from './image';
 import {Base} from './base';
 import {Group} from './group';
@@ -21,6 +20,13 @@ export class User extends Base {
         return fosp.patch(this.id + "/soc/me", { data: { fullName: this.fullName }}).then(() => {
             return fosp.patch(this.id + "/soc/me/motto", { data: this.motto });
         })
+    }
+
+    isCurrentUser() {
+        if (fosp.currentUser && fosp.currentUser.id === this.id) {
+            return true;
+        }
+        return false;
     }
 
     load() {

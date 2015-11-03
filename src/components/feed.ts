@@ -9,7 +9,7 @@ import {Post as PostModel} from '../models/post';
     selector: 'feed',
     directives: [Post, NgFor, NgIf, FORM_DIRECTIVES],
     template: `
-<div class="card">
+<div class="card" *ng-if="canPost">
 <div class="card-content">
 <h5>Post something</h5>
 <textarea class="materialize-textarea" [(ng-model)]="newPostText"></textarea>
@@ -30,6 +30,10 @@ export class Feed {
     onInit() {
         this.feed = Feed.get(this.userid + "/soc/feed/" + this.feedName);
         this.feed.load();
+    }
+
+    get canPost() {
+        return !!this.feed.owner && this.feed.owner.isCurrentUser();
     }
 
     submitPost() {
