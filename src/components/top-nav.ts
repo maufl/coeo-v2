@@ -1,13 +1,13 @@
 import {Component, NgIf} from 'angular2/angular2';
+import {RouterLink} from 'angular2/router';
 import {SideBar} from './side-bar';
-import {LoginModal} from './login-dialog';
 import {fosp} from '../services/fosp';
 import {User} from '../models/user';
 import {Avatar} from './avatar';
 
 @Component({
     selector: 'top-nav',
-    directives: [LoginModal, SideBar, Avatar, NgIf],
+    directives: [SideBar, Avatar, NgIf, RouterLink],
     template: `
 <nav>
 <side-bar #side-bar></side-bar>
@@ -17,13 +17,14 @@ import {Avatar} from './avatar';
 </ul>
 <a href="#" class="brand-logo">Coeo</a>
 <ul class="right hide-on-med-and-down">
-<li><a (click)="loginmodal.open()">
-<i *ng-if="!currentUser" class="material-icons">account_circle</i>
-<i style="padding-top: 10px;">
-<avatar *ng-if="currentUser" [user]="currentUser" [size]="'42px'" />
-</i>
-</a></li>
-<login-modal #loginmodal ></login-modal>
+<li>
+<a *ng-if="!currentUser" [router-link]="['/Login']">
+<i class="material-icons">account_circle</i>
+</a>
+<a *ng-if="currentUser" [router-link]="['/User', {id: currentUser.id}]">
+<i style="padding-top: 10px;"><avatar [user]="currentUser" [size]="'42px'" /></i>
+</a>
+</li>
 </ul>
 </div>
 </nav>
