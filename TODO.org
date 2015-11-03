@@ -1,0 +1,4 @@
+* Clean CSS, use SCSS
+** TODO Create top level app.scss
+** TODO Implement build system
+** TODO Import materialize
