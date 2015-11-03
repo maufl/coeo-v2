@@ -35,7 +35,7 @@ export class Feed {
     submitPost() {
         var date = new Date();
         var teaser = this.newPostText.replace('!@#$%^&*(){}[]\'"?|\/,.<>;:','').split(/\s+/).slice(0, 3).join('-');
-        var title = `${date.getYear()}-${date.getMonth()}-${date.getDay()}-${teaser}`;
+        var title = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}-${teaser}`;
         PostModel.create(this.userid+"/soc/feed/"+this.feedName+"/"+title, this.newPostText).then(() => {
             this.feed.reload();
             this.newPostText = "";
