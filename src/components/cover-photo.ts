@@ -1,13 +1,13 @@
 import {Component, Input, NgIf, FORM_DIRECTIVES} from 'angular2/angular2';
 import {User} from '../models/user';
+import {Avatar} from './avatar';
 
 @Component({
     selector: "cover-photo",
-    directives: [FORM_DIRECTIVES, NgIf],
+    directives: [FORM_DIRECTIVES, NgIf, Avatar],
     template: `
 <div class="card">
-<div (dragover)="prevent($event)" (drop)="updateProfilePicture($event)" class="card-panel z-depth-2" style="z-index: 1; position: absolute; top: 0; right: 0; margin: 20px; height: 100px; width: 100px; background-position: center center; background-size: cover;" [style.background-image]="'url('+user.profilePicture.image.src+')'">
-</div>
+<avatar (dragover)="prevent($event)" (drop)="updateProfilePicture($event)" [size]="'100px'" [user]="user" style="z-index: 1; position: absolute; top: 0; right: 0; margin: 20px;"></avatar>
 <div (dragover)="prevent($event)" (drop)="updateCoverPicture($event)" [style.background-image]="'url('+user.coverPicture.image.src+')'" class="card-image" style="background-size: cover; background-position: center center; height: 200px; overflow: hidden;">
 <span class="card-title" style="color: black;">{{user.fullName}}</span>
 </div>
