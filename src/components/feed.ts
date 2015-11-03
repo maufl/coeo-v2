@@ -21,7 +21,9 @@ Post
 </a>
 </div>
 </div>
-<post *ng-for="#post of feed.posts" [post]="post"></post>
+<div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+<post style="flex-grow: 1; display: block; margin: 10px; min-width: 300px; max-widht: 500px;" *ng-for="#post of feed.posts" [post]="post"></post>
+</div>
 `
 })
 export class Feed {
