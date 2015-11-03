@@ -15,6 +15,12 @@ export class User extends Base {
         this.coverPicture = Image.get(this.id + '/soc/photos/cover');
     }
 
+    patch() {
+        return fosp.patch(this.id + "/soc/me", { data: { fullName: this.fullName }}).then(() => {
+            return fosp.patch(this.id + "/soc/me/motto", { data: this.motto });
+        })
+    }
+
     load() {
         if (this.$loading || this.$loaded) {
             return Promise.reject();
