@@ -2,12 +2,14 @@ import {fosp} from '../services/fosp';
 import {cache} from '../services/cache';
 import {Image} from './image';
 import {Base} from './base';
+import {Group} from './group';
 
 export class User extends Base {
     motto: string;
     fullName: string;
     profilePicture: Image;
     coverPicture: Image;
+    groups: Array = [];
 
     constructor(id: string) {
         super(id);
@@ -32,10 +34,16 @@ export class User extends Base {
             }
             this.$loading = false;
             this.$loaded = true;
-            fosp.get(this.id + "/soc/me/motto").then((object) => {
+            return fosp.get(this.id + "/soc/me/motto").then((object) => {
                 this.motto = object.data;
+            }).catch(() => {}).then(() => {
+                return fosp.list(this.id + "/cfg/groups");
+            }).then((list) => {
+                this.groups = list.map( name => { return Group.get(this.id + "/cfg/groups/" + name); });
+                return this;
+            }).catch(() => {
+                return this;
             });
-            return this;
         }).catch((error) => {
             this.$loading = false;
         });

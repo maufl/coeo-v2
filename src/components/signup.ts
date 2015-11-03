@@ -53,6 +53,10 @@ export class Signup {
                 }).then(() => {
                     return fosp.patch(username + "/soc", { acl: { others: { data: ["read"], children: ["read"]}}});
                 }).then(() => {
+                    return fosp.ensureExistence(username + "/cfg/groups");
+                }).then(() => {
+                    return fosp.create(username + "/cfg/groups/friends", { data: { name: "Friends", members: [] }});
+                }).then(() => {
                     this.router.navigate(['/User', { id: username }]);
                 })
             }).catch((err)=>{
