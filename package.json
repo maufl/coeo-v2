@@ -24,8 +24,10 @@
   },
   "dependencies": {
     "angular2": "2.0.0-alpha.42",
-    "materialize-css": "*",
     "jquery": "^2.1.0",
+    "material-design-icons-iconfont": "^2.0.3",
+    "materialize-css": "*",
+    "roboto-fontface": "^0.4.2",
     "systemjs": "0.19.4",
     "traceur": "0.0.92"
   }

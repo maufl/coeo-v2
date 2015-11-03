@@ -68,6 +68,14 @@ gulp.task('build', ['ts2js', 'sass'], function() {
     });
 
   gulp.src([
+    'node_modules/material-design-icons-iconfont/dist/fonts/MaterialIcons-Regular.{eot,ttf,woff,woff2}'
+  ])
+    .pipe(gulp.dest('build/font'));
+  gulp.src([
+    'node_modules/roboto-fontface/fonts/Roboto-{Regular,Bold}.{ttf,woff,woff2}'
+  ])
+    .pipe(gulp.dest('build/font/roboto'));
+  gulp.src([
     'node_modules/jquery/dist/jquery.js',
     'node_modules/systemjs/dist/system.js',
     'node_modules/traceur/bin/traceur.js',
@@ -76,7 +84,7 @@ gulp.task('build', ['ts2js', 'sass'], function() {
     'node_modules/angular2/bundles/router.dev.js'
   ])
     .pipe(gulp.dest('build/js'));
-  gulp.src(['dist/css/app.css'])
+  gulp.src(['dist/styles/app.css'])
     .pipe(gulp.dest('build/css'));
   gulp.src(['index.html'])
     .pipe(htmlreplace({
