@@ -21,8 +21,8 @@ Post
 </a>
 </div>
 </div>
-<div style="display: flex; flex-direction: row; flex-wrap: wrap;">
-<post style="flex-grow: 1; display: block; margin: 10px; min-width: 300px; max-widht: 500px;" *ng-for="#post of feed.posts" [post]="post"></post>
+<div class="card-list">
+<post style="flex-grow: 1; display: block; min-width: 300px; max-widht: 500px;" *ng-for="#post of feed.posts" [post]="post"></post>
 </div>
 `
 })

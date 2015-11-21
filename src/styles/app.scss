@@ -4,22 +4,41 @@ $material-design-icons-font-path: '/font/';
 
 .modal {
     color: rgba(0, 0, 0, 0.87);
- }
-   .side-nav {
-   padding-bottom: 0;
-   }
-   .flex-column {
-   display: flex;
-   flex-direction: column;
-   }
-   .flex {
-   flex: 1;
-   }
-  html, body {
-      position: absolute;
-      min-height: 100%;
-      width: 100%;
-  }
-  body {
-      background-color: #eceff1;
-  }
+}
+.side-nav {
+    padding-bottom: 0;
+}
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.flex {
+    flex: 1;
+}
+html, body {
+    position: absolute;
+    min-height: 100%;
+    width: 100%;
+}
+body {
+    background-color: #eceff1;
+}
+
+.card-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+
+    & > * {
+        margin: 0 10px;
+    }
+}
+
+.responsive-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    @media #{$medium-and-up} {
+    width: 80%;
+}
+}

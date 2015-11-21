@@ -9,15 +9,9 @@ import {User} from '../models/user';
     viewInjector: [RouteParams],
     directives: [NgIf, CoverPhoto, Feed],
     template: `
-<div class="container">
-<div class="row">
-<div class="col s12">
+<div class="responsive-container">
 <cover-photo *ng-if="user" [user]="user"></cover-photo>
-</div>
-<div class="col s12">
 <feed *ng-if="user" [userid]="user.id" [feed-name]="'blog'"></feed>
-</div>
-</div>
 </div>
 `
 })
