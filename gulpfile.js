@@ -42,6 +42,15 @@ gulp.task('play', ['ts2js', 'sass'], function () {
 
     var port = 9000, app;
 
+  gulp.src([
+    'node_modules/material-design-icons-iconfont/dist/fonts/MaterialIcons-Regular.{eot,ttf,woff,woff2}'
+  ])
+    .pipe(gulp.dest('font'));
+  gulp.src([
+    'node_modules/roboto-fontface/fonts/Roboto-{Regular,Bold}.{ttf,woff,woff2}'
+  ])
+    .pipe(gulp.dest('font/roboto'));
+
   gulp.watch(PATHS.src, ['ts2js']);
   gulp.watch('src/**/*.scss', ['sass']);
 
