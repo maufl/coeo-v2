@@ -7,8 +7,8 @@ import {Router, RouterLink} from 'angular2/router';
     selector: 'login',
     directives: [FORM_DIRECTIVES, RouterLink],
     template: `
-<div class="container">
-<div class="card">
+<div class="responsive-container">
+<div class="centered-card card">
 <div class="card-content">
 <h4>Sign in</h4>
 <form [ng-form-model]="loginForm">
@@ -19,10 +19,8 @@ import {Router, RouterLink} from 'angular2/router';
 <input ng-control="password" type="password" placeholder="Your password" />
 </div>
 </form>
-</div>
-<div class="card-action">
-<a class="btn-flat" [router-link]="['/Signup']">Create new account</a>
-<a class="btn-flat" (click)="login()">Login</a>
+<a class="btn-flat" [router-link]="['/Signup']">Sign up instead</a>
+<a class="btn right" (click)="login()">Login</a>
 </div>
 </div>
 </div>

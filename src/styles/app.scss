@@ -24,6 +24,14 @@ body {
     background-color: #eceff1;
 }
 
+.centered-card {
+  max-width: 400px;
+  margin: 20px auto;
+  & > .card-content > h4 {
+    text-align: center;
+  }
+}
+
 .card-list {
     @media #{$medium-and-up} {
         display: flex;
