@@ -34,8 +34,8 @@ export class Base {
         this.$loading = true;
         return fosp.get(this.id).then((obj) => {
             this.owner = User.get(obj.owner);
-            this.created = new Date(obj.btime);
-            this.updated = new Date(obj.mtime);
+            this.created = new Date(obj.created);
+            this.updated = new Date(obj.updated);
             this.$loading = false;
             this.$loaded = true;
             return obj;
