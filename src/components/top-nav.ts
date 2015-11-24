@@ -12,7 +12,7 @@ import {Avatar} from './avatar';
 <div class="navbar-fixed">
 <nav>
 <side-bar #side-bar></side-bar>
-<div class="nav-wrapper teal">
+<div class="nav-wrapper red darken-2">
 <ul class="left">
 <li><a class="button-collapse hide-on-med-and-up" (click)="sideBar.show()"><i class="material-icons">menu</i></a></li>
 <li><a class="hide-on-small-only" (click)="sideBar.show()"><i class="material-icons">menu</i></a></li>

@@ -1,3 +1,6 @@
+@import "../../node_modules/materialize-css/sass/components/color";
+$primary-color: color("organge", "base");
+$secondary-color: color("blue", "base");
 @import "../../node_modules/materialize-css/sass/materialize.scss";
 $material-design-icons-font-path: '/font/';
 @import "../../node_modules/material-design-icons-iconfont/dist/material-design-icons.scss";
