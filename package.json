@@ -30,6 +30,6 @@
     "roboto-fontface": "^0.4.2",
     "systemjs": "0.19.4",
     "traceur": "0.0.92",
-    "fosp.js", "https://github.com/maufl/fosp.es6"
+    "fosp.js": "https://github.com/maufl/fosp.es6"
   }
 }
