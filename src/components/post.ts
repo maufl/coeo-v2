@@ -1,7 +1,7 @@
 import {Component, Input, NgIf} from 'angular2/angular2';
 import {RouterLink} from 'angular2/router';
 import {Avatar} from './avatar';
-import {Post} from '../models/post';
+import { Post as PostModel } from '../models/post';
 import {User} from '../models/user';
 
 @Component({
@@ -23,7 +23,7 @@ import {User} from '../models/user';
 `
 })
 export class Post {
-    @Input() post: Post;
+    @Input() post: PostModel;
 
     onInit() {
         this.post.load().then(() => {

@@ -7,8 +7,8 @@ export class Base {
     created: Date;
     updated: Date;
     owner: User;
-    $loaded: bool = false;
-    $loading: bool = false;
+    $loaded: boolean = false;
+    $loading: boolean = false;
 
     constructor(id: string) {
         this.id = id;

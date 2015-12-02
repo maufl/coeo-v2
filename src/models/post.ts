@@ -5,7 +5,7 @@ import {Base} from './base';
 export class Post extends Base{
     text: string;
 
-    private constructor(id: string) {
+    constructor(id: string) {
         super(id);
     }
 

@@ -5,9 +5,9 @@ import {Base} from './base';
 export class Feed extends Base {
     title: string;
     description: string;
-    posts: Array = [];
+    posts: Array<Post> = [];
 
-    private constructor(id: string) {
+    constructor(id: string) {
         super(id);
     }
 

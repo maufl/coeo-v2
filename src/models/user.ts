@@ -8,7 +8,7 @@ export class User extends Base {
     fullName: string;
     profilePicture: Image;
     coverPicture: Image;
-    groups: Array = [];
+    groups: Array<Group> = [];
 
     constructor(id: string) {
         super(id);

@@ -1,7 +1,7 @@
 import {Component, Input, NgFor, NgIf} from 'angular2/angular2';
 import {FORM_DIRECTIVES} from 'angular2/angular2';
 import {fosp} from '../services/fosp';
-import {Feed} from '../models/feed';
+import {Feed as FeedModel} from '../models/feed';
 import {Post} from './post';
 import {Post as PostModel} from '../models/post';
 
@@ -29,11 +29,11 @@ Post
 export class Feed {
     @Input() userid: string;
     @Input() feedName: string;
-    feed: Feed;
+    feed: FeedModel;
     newPostText: string = "";
 
     onInit() {
-        this.feed = Feed.get(this.userid + "/soc/feed/" + this.feedName);
+        this.feed = FeedModel.get(this.userid + "/soc/feed/" + this.feedName);
         this.feed.load();
     }
 
