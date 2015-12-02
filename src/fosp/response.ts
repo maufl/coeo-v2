@@ -1,10 +1,10 @@
 // Response class
-import { Message } from './message';
+import { Message, MessageOptions } from './message';
 
 export const SUCCEEDED = "SUCCEEDED", FAILED = "FAILED";
 export var Statuses = [SUCCEEDED, FAILED];
 
-interface ResponseOptions {
+interface ResponseOptions extends MessageOptions {
   status: string,
   code: number
 }

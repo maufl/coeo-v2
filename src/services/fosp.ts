@@ -1,6 +1,7 @@
 import {Connection} from '../fosp/connection';
 import {SUCCEEDED, FAILED} from '../fosp/response';
-import {Request, AUTH, GET, READ, LIST, CREATE, WRITE, PATCH} from '../fosp/request';
+import {Request, RequestOptions, AUTH, GET, READ, LIST, CREATE, WRITE, PATCH} from '../fosp/request';
+import {Response} from '../fosp/response';
 import {URL as FOSPURL} from '../fosp/url';
 import {EventEmitter} from '../fosp/events';
 import {User} from '../models/user';
@@ -8,11 +9,11 @@ import {User} from '../models/user';
 class FospService extends EventEmitter {
     currentUser: User;
     connection: Connection = null;
-    connecting: bool = false;
+    connecting: boolean = false;
 
-    open(domain) {
+    open(domain: string) {
         this.connecting = true;
-        return Connection.open({scheme: 'ws', host: domain}).then((con) => {
+        return Connection.open({scheme: 'ws', host: domain}).then((con: Connection) => {
             this.connection = con
             this.connecting = false;
             this.emit('connected');
@@ -35,8 +36,8 @@ class FospService extends EventEmitter {
         })
     }
 
-    authenticate(username, password) {
-        var initialResponse = unescape(encodeURIComponent(`\0${username}\0${password}`));
+    authenticate(username: string, password: string) {
+        var initialResponse = `\0${username}\0${password}`;
         var body = {
             sasl: {
                 mechanism: "PLAIN",
@@ -51,43 +52,58 @@ class FospService extends EventEmitter {
     }
 
     get(path: string) {
-        var url = new FOSPURL(path);
-        return this.sendRequest({method: GET, url: url});
+      return this.sendRequest({
+        method: GET,
+        url: new FOSPURL(path)
+      });
     }
 
     patch(url: string, body: any) {
-        var url = new FOSPURL(url);
-        return this.sendRequest({method: PATCH, url: url, body: body});
+      return this.sendRequest({
+        method: PATCH,
+        url: new FOSPURL(url),
+        body: body
+      });
     }
 
     list(url: string) {
-        var url = new FOSPURL(url);
-        return this.sendRequest({method: LIST, url: url});
+      return this.sendRequest({
+        method: LIST,
+        url: new FOSPURL(url)
+      });
     }
 
     read(url: string) {
-        var url = new FOSPURL(url);
-        return this.sendRequest({method: READ, url: url});
+      return this.sendRequest({
+        method: READ,
+        url: new FOSPURL(url)
+      });
     }
 
     write(url: string, body: any) {
-        var url = new FOSPURL(url);
-        return this.sendRequest({method: WRITE, url: url, body: body});
+      return this.sendRequest({
+        method: WRITE,
+        url: new FOSPURL(url),
+        body: body
+      });
     }
 
     create(url: string, body: any) {
-        var url = new FOSPURL(url);
-        return this.sendRequest({method: CREATE, url: url, body: body})
+      return this.sendRequest({
+        method: CREATE,
+        url: new FOSPURL(url),
+        body: body
+      });
     }
 
-    sendRequest(options: Object) {
+    sendRequest(options: RequestOptions) {
         if (this.connection === null && !this.connecting) {
             return Promise.reject("Not connected");
         }
         var req = new Request(options);
         return this.awaitConnection().then(() => {
             return this.connection.sendRequest(req);
-        }).then((response) => {
+        }).then((response: Response) => {
             if (response.status === FAILED) {
                 return Promise.reject("Could not " + options.method + " " + options.url + ", code " + response.code);
             }
@@ -95,7 +111,7 @@ class FospService extends EventEmitter {
         })
     }
 
-    ensureExistence(id: string) {
+    ensureExistence(id: string): Promise<any> {
         if (id.indexOf('/') === id.length - 1) {
             return Promise.resolve(true);
         }

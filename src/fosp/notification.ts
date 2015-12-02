@@ -1,10 +1,10 @@
 // Notification class
-import { Message } from './message';
+import { Message, MessageOptions } from './message';
 
 export const CREATED = "CREATED", UPDATED = "UPDATED", DELETED = "DELETED";
 export var Events = [CREATED, UPDATED, DELETED];
 
-interface NotificationOptions {
+interface NotificationOptions extends MessageOptions {
   event?: string;
   url?: URL;
 }

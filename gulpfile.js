@@ -6,7 +6,7 @@ var sass = require('gulp-sass');
 
 var PATHS = {
     src: 'src/**/*.ts',
-    typings: 'node_modules/angular2/bundles/typings/angular2/angular2.d.ts'
+    typings: 'typings/**/*.d.ts'
 };
 
 gulp.task('clean', function (done) {

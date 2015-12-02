@@ -1,5 +1,5 @@
 // Request class
-import { Message } from './message';
+import { Message, MessageOptions } from './message';
 import { URL } from './url';
 
 export const OPTIONS = "OPTIONS",
@@ -14,7 +14,7 @@ WRITE = "WRITE";
 
 export var Methods = [OPTIONS, AUTH, GET, LIST, CREATE, PATCH, DELETE, READ, WRITE];
 
-interface RequestOptions {
+export interface RequestOptions extends MessageOptions {
   method?: string,
   url?: URL
 }

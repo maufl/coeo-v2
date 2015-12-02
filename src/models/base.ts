@@ -29,7 +29,7 @@ export class Base {
 
     load() {
         if (this.$loading || this.$loaded) {
-            return Promise.reject();
+            return Promise.reject(null);
         }
         this.$loading = true;
         return fosp.get(this.id).then((obj) => {

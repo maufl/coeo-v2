@@ -1,11 +1,15 @@
-class Cache {
-    map = {};
+interface CacheMap {
+  [key: string]: any
+}
 
-    get(model: Function, id: string) {
+class Cache {
+    map: CacheMap = {};
+
+    get(model: Function, id: string): any {
         return this.map[`${model.name}:${id}`];
     }
 
-    set(model: any) {
+    set(model: any): void {
         this.map[`${model.constructor.name}:${model.id}`] = model;
     }
 }

@@ -1,19 +1,19 @@
 import {fosp} from '../services/fosp';
-import {Image} from './image';
+import {ImageAttachment} from './image-attachment';
 import {Base} from './base';
 import {Group} from './group';
 
 export class User extends Base {
     motto: string;
     fullName: string;
-    profilePicture: Image;
-    coverPicture: Image;
+    profilePicture: ImageAttachment;
+    coverPicture: ImageAttachment;
     groups: Array<Group> = [];
 
     constructor(id: string) {
         super(id);
-        this.profilePicture = Image.get(this.id + '/soc/photos/profile');
-        this.coverPicture = Image.get(this.id + '/soc/photos/cover');
+        this.profilePicture = ImageAttachment.get(this.id + '/soc/photos/profile');
+        this.coverPicture = ImageAttachment.get(this.id + '/soc/photos/cover');
     }
 
     patch() {
@@ -31,7 +31,7 @@ export class User extends Base {
 
     load() {
         if (this.$loading || this.$loaded) {
-            return Promise.reject();
+            return Promise.reject(null);
         }
         this.$loading = true;
         return fosp.get(this.id + "/soc/me").then((object) => {
@@ -45,7 +45,7 @@ export class User extends Base {
             }).catch(() => {}).then(() => {
                 return fosp.list(this.id + "/cfg/groups");
             }).then((list) => {
-                this.groups = list.map( name => { return Group.get(this.id + "/cfg/groups/" + name); });
+                this.groups = list.map( (name: string) => { return Group.get(this.id + "/cfg/groups/" + name); });
                 return this;
             }).catch(() => {
                 return this;

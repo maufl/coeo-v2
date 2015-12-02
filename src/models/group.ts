@@ -3,7 +3,7 @@ import {User} from './user';
 
 export class Group extends Base {
     name: string;
-    members: Array = [];
+    members: Array<User> = [];
 
     constructor(id: string) {
         super(id);
@@ -12,7 +12,7 @@ export class Group extends Base {
     load() {
         return super.load().then((object) => {
             this.name = object.data.name;
-            this.members = object.data.members.map((id) => { return User.get(id); })
+            this.members = object.data.members.map((id: string) => { return User.get(id); })
         })
     }
 }

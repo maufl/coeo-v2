@@ -18,7 +18,7 @@ export class Feed extends Base {
                 this.description = object.data.description;
             }
             return fosp.list(this.id)
-        }).then((list) => {
+        }).then((list: Array<string>) => {
             this.posts = [];
             list.forEach((postName) => {
                 this.posts.push(Post.get(this.id + '/' + postName));

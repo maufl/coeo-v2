@@ -5,7 +5,7 @@ interface HeaderMap {
   [key: string]: string
 }
 
-interface MessageOptions {
+export interface MessageOptions {
   header?: HeaderMap,
   body?: (string|Object|ArrayBuffer|Uint8Array)
 }
