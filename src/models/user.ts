@@ -29,7 +29,7 @@ export class User extends Base {
         return false;
     }
 
-    load() {
+    load(): Promise<any> {
         if (this.$loading || this.$loaded) {
             return Promise.reject(null);
         }

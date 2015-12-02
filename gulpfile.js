@@ -15,17 +15,18 @@ gulp.task('clean', function (done) {
 });
 
 gulp.task('ts2js', function () {
-    var typescript = require('gulp-typescript');
-    var tsResult = gulp.src([PATHS.src, PATHS.typings])
-        .pipe(typescript({
-            noImplicitAny: true,
-            module: 'system',
-            target: 'ES5',
-            emitDecoratorMetadata: true,
-            experimentalDecorators: true
-        }));
+  var typescript = require('gulp-typescript');
+  var tsResult = gulp.src([PATHS.src, PATHS.typings])
+                     .pipe(typescript({
+                       noImplicitAny: true,
+                       module: 'system',
+                       target: 'ES5',
+                       moduleResolution: 'node',
+                       emitDecoratorMetadata: true,
+                       experimentalDecorators: true
+                     }));
 
-    return tsResult.js.pipe(gulp.dest('dist'));
+  return tsResult.js.pipe(gulp.dest('dist'));
 });
 
 gulp.task('sass', function() {

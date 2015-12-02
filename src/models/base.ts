@@ -27,7 +27,7 @@ export class Base {
         return fosp.ensureExistence(this.id);
     }
 
-    load() {
+    load(): Promise<any> {
         if (this.$loading || this.$loaded) {
             return Promise.reject(null);
         }

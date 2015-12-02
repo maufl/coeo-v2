@@ -21,9 +21,9 @@ class FospService extends EventEmitter {
         });
     }
 
-    awaitConnection() {
+    awaitConnection(): Promise<string> {
         if (!this.connecting) {
-            return Promise.resolve();
+            return Promise.resolve(null);
         }
         return new Promise((resolve, reject) => {
             var timeout = setTimeout(() => {
@@ -31,7 +31,7 @@ class FospService extends EventEmitter {
             }, 1500);
             this.on('connected', () => {
                 clearTimeout(timeout);
-                resolve();
+                resolve(null);
             })
         })
     }
@@ -96,7 +96,7 @@ class FospService extends EventEmitter {
       });
     }
 
-    sendRequest(options: RequestOptions) {
+    sendRequest(options: RequestOptions): Promise<any> {
         if (this.connection === null && !this.connecting) {
             return Promise.reject("Not connected");
         }

@@ -12,7 +12,7 @@ export class Feed extends Base {
     }
 
     load() {
-        return super.load().then((object) => {
+        return super.load().then((object: { data: { title: string, description: string }}) => {
             if (typeof object.data === 'object') {
                 this.title = object.data.title;
                 this.description = object.data.description;
