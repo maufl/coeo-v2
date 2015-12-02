@@ -11,7 +11,7 @@ System.config({
   transpiler: 'traceur',
   paths: {
     '*': 'node_modules/*',
-    'coeo/*': 'dist/*'
+    'coeo/*': 'app/*'
   },
   map: {
     traceur: 'traceur/bin/traceur.js',
