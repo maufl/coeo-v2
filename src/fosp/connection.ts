@@ -14,6 +14,10 @@ interface defered {
   timeoutHandle?: number
 }
 
+interface deferedMap {
+  [key: number]: defered
+}
+
 interface openOptions {
   scheme?: string,
   host: string,
@@ -21,12 +25,12 @@ interface openOptions {
 }
 
 export class Connection extends EventEmitter {
-  ws: any;
+  ws: WebSocket;
   currentSeq: number;
-  pendingRequests: any;
+  pendingRequests: deferedMap;
   requestTimeout: number;
 
-  constructor(ws) {
+  constructor(ws: WebSocket) {
     super();
     this.ws = ws;
     this.currentSeq = 1;
@@ -34,7 +38,7 @@ export class Connection extends EventEmitter {
     this.requestTimeout = 15000;
 
     this.ws.onmessage = (message) => {
-      var data: any = message.binaryData || message.utf8Data || message.data;
+      var data = message.data;
       Parser.parseMessage(data).then((parsed: Array<any>) => {
         var [msg, seq] = parsed;
         console.debug("fosp: received message ", seq, msg.short(), msg.header, msg.body);
@@ -68,11 +72,11 @@ export class Connection extends EventEmitter {
       }
     });
 
-    this.on('close', (code, reason) => {
+    this.on('close', (code: number, reason: string) => {
       console.info('Connection closed, code ' + code + ': ' + reason);
     });
 
-    this.on('error', (err) => {
+    this.on('error', (err: Event) => {
       console.error('fosp: fatal! unrecoverable error occured on connection');
       console.error(err);
     });
