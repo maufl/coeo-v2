@@ -5,8 +5,8 @@ import { Request, Methods } from './request';
 import { Response, Statuses } from './response';
 import { Notification, Events } from './notification';
 
-var stringToUTF8Array = function(str) {
-  var utf8 = [];
+var stringToUTF8Array = function(str: string): Array<number> {
+  var utf8: Array<number> = [];
   for (var i=0; i < str.length; i++) {
     var charcode = str.charCodeAt(i);
     if (charcode < 0x80) utf8.push(charcode);
@@ -28,7 +28,7 @@ var stringToUTF8Array = function(str) {
 };
 
 
-var serializeHeaderToString = function(msg) {
+var serializeHeaderToString = function(msg: Message): string {
   var raw = '';
   for (var k in msg.header) {
     raw += k + ": " + msg.header[k] + "\r\n";
@@ -36,15 +36,15 @@ var serializeHeaderToString = function(msg) {
   return raw;
 };
 
-var serializeBodyToString = function(msg) {
+var serializeBodyToString = function(msg: Message): string {
   if (typeof msg.body !== 'undefined' && msg.body !== null)
     return "\r\n" + JSON.stringify(msg.body);
   return '';
 };
 
 
-var parseHead = function(string) {
-  var message = null, seq = 0;
+var parseHead = function(string: string): [Message, number] {
+  var message: Message = null, seq: number = 0;
   var lines = string.split("\r\n");
   var main_line = lines.shift();
   var main = main_line.split(" ");
@@ -55,24 +55,32 @@ var parseHead = function(string) {
     if (main.length !== 3) {
       throw new Error("Request line does not consist of three parts");
     }
-    message = new Request({method: identifier});
+    var url: URL = null;
     if (main[1] !== '*') {
-      message.url = new URL(main[1]);
+      url = new URL(main[1]);
     }
+    message = new Request({
+      method: identifier,
+      url: url
+    });
     seq = parseInt(main[2], 10);
   } else if (Statuses.indexOf(identifier) >= 0) {
     if (main.length !== 3) {
       throw new Error("Request line does not consist of three parts");
     }
-    message = new Response({status: identifier});
-    message.code = parseInt(main[1], 10);
+    message = new Response({
+      status: identifier,
+      code: parseInt(main[1], 10)
+    });
     seq = parseInt(main[2], 10);
   } else if (Events.indexOf(identifier) >= 0) {
     if (main.length !== 2) {
       throw new Error("Request line does not consist of two parts");
     }
-    message = new Notification({event: identifier});
-    message.url = new URL(main[1]);
+    message = new Notification({
+      event: identifier,
+      url: new URL(main[1])
+    });
   } else {
     throw new Error("Type of message unknown: " + identifier);
   }
@@ -94,19 +102,19 @@ var parseHead = function(string) {
 };
 
 // Message serialization and parsing
-var parseMessageString = function(string) {
+var parseMessageString = function(string: string): [Message, number] {
   var [head, ...body] = string.split("\r\n\r\n");
   var [message, seq] = parseHead(head);
 
   // Read body
   if (body instanceof Array && body.length > 0) {
-    body = body.join("\r\n");
-    if (body !== '') {
+    var bodyString = body.join("\r\n");
+    if (bodyString !== '') {
       try {
-        message.body = JSON.parse(body);
+        message.body = JSON.parse(bodyString);
       }
       catch(e) {
-        message.body = body;
+        message.body = bodyString;
       }
     }
   }
@@ -114,12 +122,11 @@ var parseMessageString = function(string) {
   return [message, seq];
 };
 
-var parseMessageBuffer = function(buffer) {
-  var message = null;
-  var string = '', buffer_length = buffer.byteLength, i = 0, new_buffer = null;
+var parseMessageBuffer = function(buffer: ArrayBuffer): [Message, number] {
+  var string = '', buffer_length = buffer.byteLength, i = 0, new_buffer: ArrayBuffer = null;
   buffer = new Uint8Array(buffer);
   while (i < buffer_length) {
-    var b0 = buffer[i], b1 = buffer[i+1], b2 = buffer[i+2], b3 = buffer[i+3];
+    var b0: number = buffer[i], b1 = buffer[i+1], b2 = buffer[i+2], b3 = buffer[i+3];
     if ((b0 & 0x80) === 0) {
       string += String.fromCharCode(b0);
       i += 1;
@@ -155,26 +162,26 @@ var parseMessageBuffer = function(buffer) {
 
 export class Parser {
 
-  static parseMessage(raw) {
-    var defer = {}, promise = new Promise((res,rej) => { defer.resolve = res; defer.reject = rej; });
-    try {
-      if ( raw instanceof ArrayBuffer ) {
-        defer.resolve(parseMessageBuffer(raw));
+  static parseMessage(raw: (ArrayBuffer|string)) {
+    return new Promise((resolve: Function, reject: Function) => {
+      try {
+        if ( raw instanceof ArrayBuffer ) {
+          resolve(parseMessageBuffer(raw));
+        }
+        else if ( typeof raw === 'string' ) {
+          resolve(parseMessageString(raw));
+        }
+        else {
+          reject(new Error('Unable to parse ' + raw.toString() + ' of type ' + typeof raw));
+        }
       }
-      else if ( typeof raw === 'string' ) {
-        defer.resolve(parseMessageString(raw));
+      catch (e) {
+        reject(e);
       }
-      else {
-        defer.reject(new Error('Unable to parse ' + raw.toString() + ' of type ' + typeof raw));
-      }
-    }
-    catch (e) {
-      defer.reject(e);
-    }
-    return promise;
+    });
   }
 
-  static serializeMessage(msg, seq) {
+  static serializeMessage(msg: (Request|Response|Notification), seq: number): (string|Uint8Array) {
     msg.validate();
     var header = '';
     if (msg instanceof Request) {

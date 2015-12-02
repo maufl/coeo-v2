@@ -3,11 +3,29 @@ import { EventEmitter } from './events';
 import { Request } from './request';
 import { Response } from './response';
 import { Notification } from './notification';
+import { Message } from './message';
 import { Parser } from './parser';
 
 /* global Promise */
 
+interface defered {
+  resolve: Function,
+  reject: Function,
+  timeoutHandle?: number
+}
+
+interface openOptions {
+  scheme?: string,
+  host: string,
+  port?: string
+}
+
 export class Connection extends EventEmitter {
+  ws: any;
+  currentSeq: number;
+  pendingRequests: any;
+  requestTimeout: number;
+
   constructor(ws) {
     super();
     this.ws = ws;
@@ -16,19 +34,19 @@ export class Connection extends EventEmitter {
     this.requestTimeout = 15000;
 
     this.ws.onmessage = (message) => {
-      var data = message.binaryData || message.utf8Data || message.data;
-      Parser.parseMessage(data).then((parsed) => {
+      var data: any = message.binaryData || message.utf8Data || message.data;
+      Parser.parseMessage(data).then((parsed: Array<any>) => {
         var [msg, seq] = parsed;
         console.debug("fosp: received message ", seq, msg.short(), msg.header, msg.body);
         this.emit('message', msg, seq);
-      }).catch((err) => {
+      }).catch((err: any) => {
         console.error(err);
       });
     };
     this.ws.onclose = (ev) => { this.emit('close', ev.code, ev.reason); };
     this.ws.onerror = (err) => { this.emit('error', err); };
 
-    this.on('message', (msg, seq) => {
+    this.on('message', (msg: Message, seq: number) => {
       if (msg instanceof Request) {
         this.emit('request', msg, seq);
       } else if (msg instanceof Response) {
@@ -41,7 +59,7 @@ export class Connection extends EventEmitter {
       }
     });
 
-    this.on('response', (msg, seq) => {
+    this.on('response', (msg: Response, seq: number) => {
       var defer = this.pendingRequests[seq];
       if (typeof defer !== 'undefined') {
         clearTimeout(defer.timeoutHandle);
@@ -60,26 +78,25 @@ export class Connection extends EventEmitter {
     });
   }
 
-  static open(options) {
+  static open(options: openOptions) {
     var scheme = options.scheme || 'wss', host = options.host, port = options.port || 1337;
-    var defer = {};
-    var p = new Promise((res, rej) => { defer.resolve = res; defer.reject = rej; });
-    var ws = new WebSocket(scheme + '://' + host + ':' + port);
-    ws.binaryType = 'arraybuffer';
-    ws.onopen = () => {
-      defer.resolve(new Connection(ws));
-    };
-    ws.onerror = () => {
-      defer.reject();
-    };
-    return p;
+    return new Promise((resolve: Function, reject: Function) => {
+      var ws = new WebSocket(scheme + '://' + host + ':' + port);
+      ws.binaryType = 'arraybuffer';
+      ws.onopen = () => {
+        resolve(new Connection(ws));
+      };
+      ws.onerror = () => {
+        reject();
+      };
+    });
   }
 
   isOpen() {
     return this.ws.readyState === WebSocket.OPEN;
   }
 
-  sendMessage(msg, seq) {
+  sendMessage(msg: (Request|Response|Notification), seq: number) {
     console.debug("fosp: sending message ", seq, msg.short(), msg.header, msg.body);
     try {
       var raw = Parser.serializeMessage(msg, seq);
@@ -95,8 +112,8 @@ export class Connection extends EventEmitter {
   }
 
   // Convinience for sending requests
-  sendRequest(req) {
-    var defer = {}, promise = new Promise((res,rej) => { defer.resolve = res; defer.reject = rej; });
+  sendRequest(req: Request) {
+    var defer: defered = { resolve: null, reject: null }, promise = new Promise((res: Function, rej: Function) => { defer.resolve = res; defer.reject = rej; });
     var seq = this.currentSeq;
     this.currentSeq++;
     this.pendingRequests[seq] = defer;

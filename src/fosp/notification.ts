@@ -4,8 +4,16 @@ import { Message } from './message';
 export const CREATED = "CREATED", UPDATED = "UPDATED", DELETED = "DELETED";
 export var Events = [CREATED, UPDATED, DELETED];
 
+interface NotificationOptions {
+  event?: string;
+  url?: URL;
+}
+
 export class Notification extends Message {
-  constructor(msg) {
+  event: string;
+  url: URL;
+
+  constructor(msg: NotificationOptions) {
     super(msg);
     this.event = msg.event || '';
     this.url = msg.url || null;
@@ -13,7 +21,7 @@ export class Notification extends Message {
 
   validate() {
     // Sanity check of message
-    if (!this instanceof Notification) {
+    if (!(this instanceof Notification)) {
       throw new Error("This notification is no notification");
     }
     if (typeof(this.event) !== "string" || Events.indexOf(this.event) < 0) {

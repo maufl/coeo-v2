@@ -1,8 +1,20 @@
 //Everything message related
 import { EventEmitter } from './events';
 
+interface HeaderMap {
+  [key: string]: string
+}
+
+interface MessageOptions {
+  header?: HeaderMap,
+  body?: (string|Object|ArrayBuffer|Uint8Array)
+}
+
 export class Message extends EventEmitter {
-  constructor(msg) {
+  header: HeaderMap;
+  body: Object
+
+  constructor(msg: MessageOptions) {
     super();
     this.header = msg.header || {};
     this.body = msg.body || null;
@@ -12,5 +24,9 @@ export class Message extends EventEmitter {
     if (this.body instanceof ArrayBuffer || this.body instanceof Uint8Array)
       return this.short() + ' :: [binary data]';
     return this.short() + ' :: ' + JSON.stringify(this.body);
+  }
+
+  short() {
+    throw new Error('short() must be implemented by child class');
   }
 }
