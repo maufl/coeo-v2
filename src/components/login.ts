@@ -27,6 +27,9 @@ import {Router, RouterLink} from 'angular2/router';
 `
 })
 export class Login {
+  router: Router;
+  loginForm: ControlGroup;
+  
     constructor(private element:ElementRef, @Inject(Router) router: Router) {
         this.router = router;
         var username = localStorage.getItem('coeo.username');

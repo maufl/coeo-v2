@@ -29,7 +29,7 @@ import {User} from '../models/user';
 export class SideBar {
     button: Element;
     randomId: string;
-    private initialized: bool;
+    private initialized: boolean;
     user: User = null;
 
     constructor(private element:ElementRef) {

@@ -19,7 +19,7 @@ export class UserView {
     user: User;
 
     constructor(routeParams: RouteParams) {
-        this.user = User.get(routeParams.params.id);
+        this.user = User.get(routeParams.params['id']);
         this.user.load();
     }
 }

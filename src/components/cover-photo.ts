@@ -42,7 +42,7 @@ export class CoverPhoto {
         this.user.profilePicture.load();
     }
 
-    updateProfilePicture(event) {
+    updateProfilePicture(event: DragEvent) {
         this.prevent(event);
         if (!this.user.isCurrentUser()) {
             return;
@@ -54,7 +54,7 @@ export class CoverPhoto {
         this.user.profilePicture.write(file);
     }
 
-    updateCoverPicture(event) {
+    updateCoverPicture(event: DragEvent) {
         this.prevent(event);
         if (!this.user.isCurrentUser()) {
             return;
@@ -75,7 +75,7 @@ export class CoverPhoto {
         })
     }
 
-    prevent(event) {
+    prevent(event: DragEvent) {
         event.preventDefault();
         event.stopPropagation();
     }

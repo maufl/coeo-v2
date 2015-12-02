@@ -26,7 +26,10 @@ import {Router, RouterLink} from 'angular2/router';
 </div>
 `
 })
-export class Signup {
+  export class Signup {
+    router: Router;
+    loginForm: ControlGroup;
+
     constructor(@Inject(Router) router: Router) {
         this.router = router;
         this.loginForm = (new FormBuilder()).group({
