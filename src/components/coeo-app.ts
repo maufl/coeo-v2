@@ -5,6 +5,7 @@ import {UserView} from './user-view';
 import {About} from './about';
 import {Login} from './login';
 import {Signup} from './signup';
+import {Settings} from './settings';
 
 @Component({ selector: 'coeo-app' })
 @View({
@@ -17,7 +18,8 @@ import {Signup} from './signup';
 })
 @RouteConfig([
     { path: '/', redirectTo: '/login' },
-    { path: '/u/:id', component: UserView, as: 'User' },
+  { path: '/u/:id', component: UserView, as: 'User' },
+  { path: '/s/:id', component: Settings, as: 'Settings' },
     { path: '/about', component: About, as: 'About' },
     { path: '/signup', component: Signup, as: 'Signup' },
     { path: '/login', component: Login, as: 'Login' }
