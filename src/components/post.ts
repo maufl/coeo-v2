@@ -11,7 +11,7 @@ import {User} from '../models/user';
 <div class="card">
 <div class="card-content">
 <div *ng-if="post.owner" style="display: flex; flex-direction: row">
-<avatar [user]="post.owner" [size]="'42px'"></avatar>
+<avatar [user]="post.owner" [size]="'42px'" [shadow]="false"></avatar>
 <div style="flex: 1; margin-left: 5px;">
 <h5 style="margin: 0;" [router-link]="['/User', { id: post.owner.id}]">{{post.owner.fullName}}</h5>
 <small>{{post.created | date:'medium'}}</small>
