@@ -1,5 +1,6 @@
 import {fosp} from '../services/fosp';
 import {Base} from './base';
+import {FospObject} from '../fosp/object';
 
 export class ImageAttachment extends Base {
   type: string;
@@ -12,7 +13,7 @@ export class ImageAttachment extends Base {
     this.image = new Image();
   }
 
-  write(file: File) {
+  write(file: File): Promise<any> {
     return new Promise((resolve: Function, reject: Function) => {
       var reader = new FileReader();
       reader.onload = () => {
@@ -32,17 +33,18 @@ export class ImageAttachment extends Base {
   }
 
   load() {
-    return super.load().then(({ attachment = {}}: { attachment: { type?: string, size?: number, name?: string }}) => {
+    return super.load().then((object) => {
+      var { attachment =  { size: 0 } } = object;
       if (typeof attachment.type !== 'string' || !attachment.type.match(/image\//)) {
-        return Promise.reject('Resource ' + this.id + ' is not an image');
+        return new Promise<FospObject>((resolve, reject) => { reject('Resource ' + this.id + ' is not an image') });
       }
       this.type = attachment.type;
       this.size = attachment.size;
       this.name = attachment.name;
-      return fosp.read(this.id).then((body) => {
-        var blob = new Blob([body], {type: this.type})
-          this.image.src = URL.createObjectURL(blob)
-          return this;
+      return fosp.read(this.id).then((body: ArrayBuffer) => {
+        var blob = new Blob([body], {type: this.type});
+        this.image.src = URL.createObjectURL(blob);
+        return Promise.resolve(object);
       });
     });
   }

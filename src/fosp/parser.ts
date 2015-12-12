@@ -124,9 +124,9 @@ var parseMessageString = function(string: string): [Message, number] {
 
 var parseMessageBuffer = function(buffer: ArrayBuffer): [Message, number] {
   var string = '', buffer_length = buffer.byteLength, i = 0, new_buffer: ArrayBuffer = null;
-  buffer = new Uint8Array(buffer);
+  var buffer_view = new Uint8Array(buffer);
   while (i < buffer_length) {
-    var b0: number = buffer[i], b1 = buffer[i+1], b2 = buffer[i+2], b3 = buffer[i+3];
+    var b0: number = buffer_view[i], b1 = buffer_view[i+1], b2 = buffer_view[i+2], b3 = buffer_view[i+3];
     if ((b0 & 0x80) === 0) {
       string += String.fromCharCode(b0);
       i += 1;
@@ -152,7 +152,7 @@ var parseMessageBuffer = function(buffer: ArrayBuffer): [Message, number] {
     }
   }
   if (i < buffer_length) {
-    new_buffer = buffer.subarray(i);
+    new_buffer = buffer_view.subarray(i);
   }
   var [message, seq] = parseHead(string);
   message.body = new_buffer;
@@ -197,24 +197,25 @@ export class Parser {
     var head = header + "\r\n" + serializeHeaderToString(msg);
 
     // Serialize body to string
-    if (!(msg.body instanceof ArrayBuffer)) {
-      return head + serializeBodyToString(msg);
+    var body = msg.body
+    if (body instanceof ArrayBuffer) {
+      // Serialize body to buffer
+      var body_length = body.byteLength;
+      if ( body_length > 0)
+          head += "\r\n";
+      var headUTF8Array = stringToUTF8Array(head), head_length = headUTF8Array.length;
+      var serializedMessage = new Uint8Array(new ArrayBuffer(head_length + body_length));
+      var body_view = new Uint8Array(body);
+      for (var i = 0; i < head_length; i++) {
+          serializedMessage[i] = headUTF8Array[i];
+      }
+      for (i = 0; i < body_length; i++) {
+          serializedMessage[i+head_length] = body_view[i];
+      }
+      return serializedMessage;
     }
 
-    // Serialize body to buffer
-    var body_length = (msg.body.byteLength || msg.body.length);
-    if ( body_length > 0)
-      head += "\r\n";
-    var headUTF8Array = stringToUTF8Array(head), head_length = headUTF8Array.length;
-    var serializedMessage = new Uint8Array(new ArrayBuffer(head_length + body_length));
-    var body = new Uint8Array(msg.body);
-    for (var i = 0; i < head_length; i++) {
-      serializedMessage[i] = headUTF8Array[i];
-    }
-    for (i = 0; i < body_length; i++) {
-      serializedMessage[i+head_length] = body[i];
-    }
-    return serializedMessage;
+    return head + serializeBodyToString(msg);
   }
 
 }

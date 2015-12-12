@@ -1,6 +1,7 @@
 import {fosp} from '../services/fosp';
 import {cache} from '../services/cache';
 import {User} from './user';
+import {FospObject} from '../fosp/object';
 
 export class Base {
     id: string;
@@ -27,9 +28,9 @@ export class Base {
         return fosp.ensureExistence(this.id);
     }
 
-    load(): Promise<any> {
+    load(): Promise<FospObject> {
         if (this.$loading || this.$loaded) {
-            return Promise.reject(null);
+            return (new Promise<FospObject>((_, reject) => { reject(null) }));
         }
         this.$loading = true;
         return fosp.get(this.id).then((obj) => {
@@ -38,7 +39,7 @@ export class Base {
             this.updated = new Date(obj.updated);
             this.$loading = false;
             this.$loaded = true;
-            return obj;
+            return Promise.resolve(obj);
         }).catch((error) => {
             this.$loading = false;
             return Promise.reject(error);

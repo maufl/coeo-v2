@@ -4,6 +4,7 @@ import {Request, RequestOptions, AUTH, GET, READ, LIST, CREATE, WRITE, PATCH} fr
 import {Response} from '../fosp/response';
 import {URL as FOSPURL} from '../fosp/url';
 import {EventEmitter} from '../fosp/events';
+import {FospObject} from '../fosp/object';
 import {User} from '../models/user';
 
 class FospService extends EventEmitter {
@@ -51,7 +52,7 @@ class FospService extends EventEmitter {
         });
     }
 
-    get(path: string) {
+    get(path: string): Promise<FospObject> {
       return this.sendRequest({
         method: GET,
         url: new FOSPURL(path)
@@ -73,7 +74,7 @@ class FospService extends EventEmitter {
       });
     }
 
-    read(url: string) {
+    read(url: string): Promise<ArrayBuffer> {
       return this.sendRequest({
         method: READ,
         url: new FOSPURL(url)

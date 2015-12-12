@@ -1,5 +1,6 @@
 // Notification class
 import { Message, MessageOptions } from './message';
+import { URL } from './url';
 
 export const CREATED = "CREATED", UPDATED = "UPDATED", DELETED = "DELETED";
 export var Events = [CREATED, UPDATED, DELETED];

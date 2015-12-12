@@ -45,9 +45,9 @@ export class SideBar {
 
     show() {
         if (!this.initialized) {
-            $(this.button).sideNav();
+            jQuery(this.button).sideNav();
         }
-        $(this.button).sideNav('show');
+        jQuery(this.button).sideNav('show');
         this.initialized = true;
     }
 }

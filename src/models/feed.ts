@@ -12,18 +12,18 @@ export class Feed extends Base {
     }
 
     load() {
-        return super.load().then((object: { data: { title: string, description: string }}) => {
+        return super.load().then((object) => {
             if (typeof object.data === 'object') {
                 this.title = object.data.title;
                 this.description = object.data.description;
             }
-            return fosp.list(this.id)
-        }).then((list: Array<string>) => {
-            this.posts = [];
-            list.forEach((postName) => {
-                this.posts.push(Post.get(this.id + '/' + postName));
+            return fosp.list(this.id).then((list: Array<string>) => {
+                this.posts = [];
+                list.forEach((postName) => {
+                    this.posts.push(Post.get(this.id + '/' + postName));
+                });
+                return Promise.resolve(object)
             })
-            return true;
         })
     }
 }

@@ -7,12 +7,12 @@ interface HeaderMap {
 
 export interface MessageOptions {
   header?: HeaderMap,
-  body?: (string|Object|ArrayBuffer|Uint8Array)
+  body?: (Object|ArrayBuffer)
 }
 
 export class Message extends EventEmitter {
   header: HeaderMap;
-  body: Object
+  body: (Object|ArrayBuffer);
 
   constructor(msg: MessageOptions) {
     super();

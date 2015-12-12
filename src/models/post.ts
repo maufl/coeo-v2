@@ -16,7 +16,7 @@ export class Post extends Base{
     load() {
         return super.load().then((object) => {
             this.text = object.data;
-            return true;
+            return Promise.resolve(object);
         })
     }
 }
